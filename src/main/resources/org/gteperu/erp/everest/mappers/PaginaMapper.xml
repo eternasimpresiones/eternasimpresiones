@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gteperu.erp.everest.mappers.PaginaMapper">
+    <resultMap id="rmPagina" type="org.gteperu.erp.everest.domain.Pagina">
+        <result property="idpagina"   column="idpagina" />
+        <result property="idmodulo"   column="idmodulo" />
+        <result property="descripcion"   column="descripcion" />
+        <result property="url"   column="url" />
+        <result property="parametros"   column="parametros" />
+        <result property="icono"   column="icono" />
+        <result property="estado"   column="estado" />
+        <association property="modulo" javaType="org.gteperu.erp.everest.domain.Modulo" column="idmodulo" resultMap="rmModulo"/>
+    </resultMap>
+    <resultMap id="rmTotal" type="org.gteperu.erp.everest.domain.Pagination">
+        <result property="cantidad"   column="cantidad" />
+    </resultMap>
+    
+    <resultMap id="rmModulo" type="org.gteperu.erp.everest.domain.Modulo">
+        <!--<result property="idmodulo"   column="idmodulo" />-->
+        <result property="descripcion"   column="descripcionm" />
+        <!--        <result property="icono"   column="icono" />
+        <result property="estado"   column="estado" />-->
+    </resultMap>
+    
+    
+    
+    <select id="retornaPaginaPorEstado"  resultMap="rmPagina">
+        select p.idpagina,p.idmodulo,p.descripcion,p.url,p.parametros,p.icono,p.estado,m.descripcion as descripcionm from pagina p 
+        left join modulo m on m.idmodulo=p.idmodulo
+        <if test="pagina.estado != null and pagina.estado != '' and pagina.estado ==1">           
+            where p.estado = 1
+        </if>
+        <if test="pagina.estado != null and pagina.estado != '' and pagina.estado ==2">           
+            where p.estado = 0
+        </if>
+        <if test="pagina.offset != null and pagina.limit != null">           
+            offset #{pagina.offset} limit #{pagina.limit}
+        </if>
+    </select>
+    
+    
+    
+    <select id="retornaPaginaLikePorNombre"  resultMap="rmPagina">
+        
+        select p.idpagina,p.idmodulo,p.descripcion,p.url,p.parametros,p.icono,p.estado,m.descripcion as descripcionm from pagina p left join modulo m on m.idmodulo=p.idmodulo
+        where upper(p.descripcion) like upper(concat('%',#{pagina.descripcion},'%'))   
+        <if test="pagina.offset != null and pagina.limit != null">           
+            offset #{pagina.offset} limit #{pagina.limit}
+        </if> 
+    </select>
+    
+    <select id="retornaCantidadList"  resultMap="rmTotal">
+        select count(*) as cantidad from pagina 
+        <if test="pagina.estado != null and pagina.estado != '' and pagina.estado ==1">           
+            where estado =1
+        </if>
+        <if test="pagina.estado != null and pagina.estado != '' and pagina.estado ==2">           
+            where estado =0
+        </if>       
+    </select>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <resultMap id="rmPaginaPerfil" type="org.gteperu.erp.everest.domain.Pagina">
+        <result property="idpagina"   column="idpagina" />
+        <result property="idmodulo"   column="idmodulo" />
+        <result property="descripcion"   column="descripcionp" />
+        <result property="nameModulo"   column="descripcionm" />
+        <result property="url"   column="url" />
+        <result property="parametros"   column="parametros" />
+        <result property="icono"   column="iconop" />
+        <result property="siperfil"   column="estado" />
+        <result property="idperfil"   column="idperfil" />
+        <association property="modulo" javaType="org.gteperu.erp.everest.domain.Modulo" column="idmodulo" resultMap="rmModulo"/>
+    </resultMap>
+    <select id="retornaPaginasMapPorPerfil" parameterType="org.gteperu.erp.everest.domain.Perfiles" resultMap="rmPaginaPerfil">
+ 
+        select *,0 as estado,#{idperfiles} as idperfil from view_paginasperfiles o where  o.idpagina not in(
+        select uo.idpagina from perfilespaginas uo where uo.idperfil=#{idperfiles} and idagrupadormodulos=#{idagrupadormodulos}
+        )
+        union
+        select *,1 as estado,#{idperfiles} as idperfil from view_paginasperfiles o where  o.idpagina in(
+        select uo.idpagina from perfilespaginas uo where uo.idperfil=#{idperfiles} and idagrupadormodulos=#{idagrupadormodulos}
+        )
+
+    </select>
+</mapper>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gteperu.erp.everest.mappers.ClienteMapper">
+	
+	<resultMap id="rmCliente" type="org.gteperu.erp.everest.domain._Clientes">
+		<result property="id_cliente" column="id_cliente" />
+		<result property="id_empresa" column="id_empresa" />
+		<result property="tipo_doc" column="tipo_doc" />
+		<result property="nro_doc" column="nro_doc" />
+		<result property="razon_social" column="razon_social" />
+		<result property="razon_comercial" column="razon_comercial" />
+		<result property="email" column="email" />
+		<result property="movil" column="movil" />
+		<result property="fijo" column="fijo" />
+		<result property="cuenta_detraccion" column="cuenta_detraccion" />
+        <result property="idubigeo"   column="idubigeo" />
+		<result property="direccion_fiscal" column="direccion_fiscal" />
+	    <result property="direccion_fiscal2" column="direccion_fiscal2" />
+	    <result property="direccion_fiscal3" column="direccion_fiscal3" />
+	  <result property="scontrasena" column="scontrasena" />
+	    
+	    
+	    
+		<association property="Sutipodocumento" javaType="org.gteperu.erp.everest.domain.Sutipodocumento"
+		resultMap="rmTipoDocIdentidad" />
+		<association property="ubigeo" javaType="org.gteperu.erp.everest.domain.Ubigeo"
+			column="idubigeo" resultMap="rmUbigeo" />
+	</resultMap>
+	
+	<resultMap id="rmTipoDocIdentidad" type="org.gteperu.erp.everest.domain.Sutipodocumento">
+        <result property="idsutipodocumento"   column="idsutipodocumento" />
+        <result property="codigosunat"   column="codigosunat" />
+        <result property="descripcion"   column="descripcion" />
+        <result property="longmax"   column="longmax" />
+        <result property="abrv"   column="abrv" />
+    </resultMap>
+
+	<resultMap id="rmUbigeo" type="org.gteperu.erp.everest.domain.Ubigeo">
+        <result property="idubigeo"   column="idubigeo" />
+        <result property="departamento"   column="departamento" />
+        <result property="provincia"   column="provincia" />
+        <result property="distrito"   column="distrito" />
+        <result property="estado"   column="estado" />
+        <result property="codigo"   column="codigo" />
+    </resultMap>
+
+	<select id="retornaClientePorIdcliente" resultMap="rmCliente">
+		select * from cliente c 
+    	left join ubigeo u on c.idubigeo = u.idubigeo
+    	INNER JOIN sutipodocumentoidentidad si
+		ON c.tipo_doc = si.codigosunat
+    	where c.id_cliente=#{param.id_cliente}
+	</select>
+	
+	<select id="listarClientePorEmpresa" resultMap="rmCliente">
+		SELECT * FROM cliente c
+		INNER JOIN sutipodocumentoidentidad si
+		ON c.tipo_doc = si.codigosunat
+		WHERE  c.id_empresa=#{param.id_empresa}
+		<if test="param.offset != null and param.limit != null">
+		offset #{param.offset} limit #{param.limit}
+		</if>
+	</select>
+	
+	
+		
+</mapper>

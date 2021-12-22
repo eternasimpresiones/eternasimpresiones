@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ventas" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="39a0c200-6e80-42be-9749-991fcab29811">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="idempresa" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\Sistemas\\sigue - contable\\18052016\\sigue\\src\\main\\webapp\\WEB-INF\\jasper\\reportes\\ventas\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idperiodo" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT dtc.idtranspagoscobranza,f.tipodecambio,f.idsutipooperacion,dtc.estado as estadop,tc.tipooperacion as tipooperacionp,f.tipooperacion,f.notadebitocredito,f.documentoreferencia,f.estadosalida,f.serie,f.impuestocancelado,f.subtotalcancelado,f.idempresa,f.porcentajeanticipo,f.montocancelado,f.iddocumentos,fd.afectoinafecto,f.idtipomoneda,
+        tm.descripcion as descripciontc,f.idcondicionespago,cp.descripcion as descripcioncp,f.idcliente,
+        cli.idclientes,cli.nombre as nombrecli,cli.telefono,cli.email,cli.celular,cli.direccionguia,cli.direccionfacturacion,cli.documentoidentidadcliente,cli.idubigeo,
+        f.idsutipocomprovantepagodocumento,compro.descripcion as descripciontcv,compro.codigosunat,f.subtotal,
+        f.impuesto, f.descuento, f.total, f.comentario, f.fecharegistro,f.fechapago,f.diaspago,f.idcreditoclientes,f.entregadias,
+        f.fechaentrega,f.codigo as codigof,tm.simbolo as simbolo,
+        fd.conceptoincluyeigv,fd.idordenguia,fd.cantidad,fd.costounitario,fd.estadoguiado,fd.cantidadguiada,fd.iddocumentosdetalle,fd.idclasificadorcostos,fd.impuesto as impuestod,fd.subtotal as subtotald,fd.idconcepto,
+        um.idunidadmedida,um.codigo, um.descripcion, ccc.patroncuenta,c.nombre as cnombre,c.incluyeigv,c.cuentaimpuesto,c.cuentaventa,c.cuentacompra,
+        u.departamento,u.provincia,u.distrito,e.razonsocial as razonsociale,e.ruc as ruce,e.direccioncomercial as direccioncomerciale,e.urlimagen,dtc.iddetalletranspagoscobranza,
+        mp.descripcion as descripcionmp,tc.importe as importep,tc.numerocheque,tc.numerotransaccion,tc.fecharegistro as fechapagotc,tc.hora,cc.nombre as nombrecaja,b.nombre as nombrebanco, dtc.iddocumentos as iddocumentosdtc,
+	case when f.estadotesoreria=2 then 'Cobrado' else 'Pendiente de Cobro' end as estado
+        FROM documentos f
+        inner join clientes cli on  f.idcliente=cli.idclientes
+        inner join tipomoneda tm on  f.idtipomoneda=tm.idtipomoneda
+        inner join condicionespago cp on  f.idcondicionespago=cp.idcondicionespago
+        inner join sutipocomprovantepagodocumento compro on  compro.idsutipocomprovantepagodocumento=f.idsutipocomprovantepagodocumento
+        inner join documentosdetalle fd on fd.iddocumentos=f.iddocumentos
+        left join clasificadorcostos ccc on ccc.idclasificadorcostos=fd.idclasificadorcostos
+        left join unidadmedida um on um.idunidadmedida=fd.idunidadmedida
+        left join conceptos c on c.idconceptos=fd.idconcepto
+        left join ubigeo u on u.idubigeo=cli.idubigeo
+        inner join empresa e on e.idempresa=f.idempresa
+        left join detalletranspagoscobranza dtc on dtc.iddocumentos = f.iddocumentos
+        left join transpagoscobranza tc on tc.idtranspagoscobranza = dtc.idtranspagoscobranza
+        left join caja cc on cc.idcaja=tc.idcaja
+        left join bancoempresa be on be.idbancoempresa=tc.idbanco
+        left join sutipomediopago mp on mp.idsutipomediopago=tc.idsutipomediopago
+        left join banco b on b.idbanco=be.idbanco
+	where f.tipodocasociado in(1,4,5,6) and f.idcondicionespago in(1,2) and f.idempresa=$P{idempresa} and f.idperiodo=$P{idperiodo}]]>
+	</queryString>
+	<field name="idtranspagoscobranza" class="java.lang.Integer"/>
+	<field name="tipodecambio" class="java.lang.Double"/>
+	<field name="idsutipooperacion" class="java.lang.Integer"/>
+	<field name="estadop" class="java.lang.Integer"/>
+	<field name="tipooperacionp" class="java.lang.Integer"/>
+	<field name="tipooperacion" class="java.lang.Integer"/>
+	<field name="notadebitocredito" class="java.lang.Integer"/>
+	<field name="documentoreferencia" class="java.lang.Integer"/>
+	<field name="estadosalida" class="java.lang.Integer"/>
+	<field name="serie" class="java.lang.String"/>
+	<field name="impuestocancelado" class="java.lang.Double"/>
+	<field name="subtotalcancelado" class="java.lang.Double"/>
+	<field name="idempresa" class="java.lang.Integer"/>
+	<field name="porcentajeanticipo" class="java.lang.Integer"/>
+	<field name="montocancelado" class="java.lang.Double"/>
+	<field name="iddocumentos" class="java.lang.Integer"/>
+	<field name="afectoinafecto" class="java.lang.Integer"/>
+	<field name="idtipomoneda" class="java.lang.Integer"/>
+	<field name="descripciontc" class="java.lang.String"/>
+	<field name="idcondicionespago" class="java.lang.Integer"/>
+	<field name="descripcioncp" class="java.lang.String"/>
+	<field name="idcliente" class="java.lang.Integer"/>
+	<field name="idclientes" class="java.lang.Integer"/>
+	<field name="nombrecli" class="java.lang.String"/>
+	<field name="telefono" class="java.lang.String"/>
+	<field name="email" class="java.lang.String"/>
+	<field name="celular" class="java.lang.String"/>
+	<field name="direccionguia" class="java.lang.String"/>
+	<field name="direccionfacturacion" class="java.lang.String"/>
+	<field name="documentoidentidadcliente" class="java.lang.String"/>
+	<field name="idubigeo" class="java.lang.Integer"/>
+	<field name="idsutipocomprovantepagodocumento" class="java.lang.Integer"/>
+	<field name="descripciontcv" class="java.lang.String"/>
+	<field name="codigosunat" class="java.lang.String"/>
+	<field name="subtotal" class="java.lang.Double"/>
+	<field name="impuesto" class="java.lang.Double"/>
+	<field name="descuento" class="java.lang.Double"/>
+	<field name="total" class="java.lang.Double"/>
+	<field name="comentario" class="java.lang.String"/>
+	<field name="fecharegistro" class="java.sql.Timestamp"/>
+	<field name="fechapago" class="java.sql.Timestamp"/>
+	<field name="diaspago" class="java.lang.Integer"/>
+	<field name="idcreditoclientes" class="java.lang.Integer"/>
+	<field name="entregadias" class="java.lang.Integer"/>
+	<field name="fechaentrega" class="java.sql.Timestamp"/>
+	<field name="codigof" class="java.lang.String"/>
+	<field name="simbolo" class="java.lang.String"/>
+	<field name="conceptoincluyeigv" class="java.lang.Integer"/>
+	<field name="idordenguia" class="java.lang.Integer"/>
+	<field name="cantidad" class="java.lang.Integer"/>
+	<field name="costounitario" class="java.lang.Double"/>
+	<field name="estadoguiado" class="java.lang.Integer"/>
+	<field name="cantidadguiada" class="java.lang.Integer"/>
+	<field name="iddocumentosdetalle" class="java.lang.Integer"/>
+	<field name="idclasificadorcostos" class="java.lang.Integer"/>
+	<field name="impuestod" class="java.lang.Double"/>
+	<field name="subtotald" class="java.lang.Double"/>
+	<field name="idconcepto" class="java.lang.Integer"/>
+	<field name="idunidadmedida" class="java.lang.Integer"/>
+	<field name="codigo" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="patroncuenta" class="java.lang.Integer"/>
+	<field name="cnombre" class="java.lang.String"/>
+	<field name="incluyeigv" class="java.lang.Integer"/>
+	<field name="cuentaimpuesto" class="java.lang.String"/>
+	<field name="cuentaventa" class="java.lang.String"/>
+	<field name="cuentacompra" class="java.lang.String"/>
+	<field name="departamento" class="java.lang.String"/>
+	<field name="provincia" class="java.lang.String"/>
+	<field name="distrito" class="java.lang.String"/>
+	<field name="razonsociale" class="java.lang.String"/>
+	<field name="ruce" class="java.lang.String"/>
+	<field name="direccioncomerciale" class="java.lang.String"/>
+	<field name="urlimagen" class="java.lang.String"/>
+	<field name="iddetalletranspagoscobranza" class="java.lang.Integer"/>
+	<field name="descripcionmp" class="java.lang.String"/>
+	<field name="importep" class="java.lang.Double"/>
+	<field name="numerocheque" class="java.lang.String"/>
+	<field name="numerotransaccion" class="java.lang.String"/>
+	<field name="fechapagotc" class="java.sql.Timestamp"/>
+	<field name="hora" class="java.sql.Timestamp"/>
+	<field name="nombrecaja" class="java.lang.String"/>
+	<field name="nombrebanco" class="java.lang.String"/>
+	<field name="iddocumentosdtc" class="java.lang.Integer"/>
+	<field name="estado" class="java.lang.String"/>
+	<variable name="total_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
+	</variable>
+	<variable name="subtotal_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{subtotal}]]></variableExpression>
+	</variable>
+	<variable name="impuesto_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{impuesto}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="93" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="ff9d2d7f-2614-445f-8e14-b9a036943251" style="Title" x="154" y="13" width="263" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Reporte de Ventas]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="14bc6f9c-b7e7-4c21-89eb-75b25a69fbca" x="0" y="0" width="78" height="70"/>
+				<imageExpression><![CDATA[$F{urlimagen}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="054cc570-51a0-4317-b9aa-68c56926e334" x="154" y="46" width="263" height="24" forecolor="#999999"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="18"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{razonsociale}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="39" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="afdb81ed-f65e-4f57-ad6d-be784097b6c6" x="157" y="16" width="39" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[F.VENTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fb237f2a-b83c-42d4-8e62-cbb74bd413f2" x="1" y="16" width="77" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[N° COMPROBANTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="13ab5067-3d84-432a-8f47-c0d210a39565" x="200" y="16" width="153" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9f8517d9-fdc4-42b4-a7ce-dfa3f30dde74" x="476" y="16" width="38" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[F.COBRO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5fcd0ce4-8de1-4e2e-9739-c2e0f03c6cff" x="513" y="16" width="42" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="716baf7b-965a-4390-993e-533e63a4cfd0" x="356" y="16" width="62" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DNI / RUC]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="44df43f3-f61e-4b6b-ada1-a221a3015a8b" x="0" y="36" width="555" height="2"/>
+			</line>
+			<staticText>
+				<reportElement uuid="6e9a216e-f44f-4ef1-81a5-575b5a2f2d4f" x="418" y="16" width="56" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONDICION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e5f24d8e-0adf-487e-8fc9-d405dbe7bce8" x="82" y="16" width="69" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[COMPROBANTE]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="31" splitType="Stretch">
+			<textField>
+				<reportElement uuid="df0955f2-a695-4837-be77-a157b864656d" x="157" y="9" width="39" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecharegistro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8478ba2c-72af-40aa-97c6-6a84cb42b697" x="1" y="4" width="77" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codigosunat}+"-"+$F{serie}+"-"+$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="98cb946d-c852-49ad-9860-505c62cc99b5" x="200" y="4" width="153" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombrecli}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ad097465-4a54-45c8-b58f-37c114e54f32" x="517" y="4" width="38" height="24"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph rightIndent="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subtotal}+$F{impuesto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f72c259b-45e3-46eb-b230-cc7b2a29fcd6" x="356" y="4" width="62" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{documentoidentidadcliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7193cdbc-bf35-4e26-831c-00d0ae238770" x="418" y="4" width="56" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{estado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1eef8aae-649a-4c1a-bf1e-31456bd91ff3" x="82" y="4" width="69" height="24"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripciontcv}+" al "+$F{descripcioncp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6b6c9952-4943-4c76-82fe-3c03f884413e" x="476" y="9" width="39" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechapago}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="99" splitType="Stretch">
+			<line>
+				<reportElement uuid="689e6fb5-1a98-4bdc-8537-611eac25f75a" x="0" y="3" width="555" height="1"/>
+			</line>
+			<rectangle radius="10">
+				<reportElement uuid="b7b3afa6-6922-44e0-8eaf-687fc4741975" x="399" y="8" width="156" height="88"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="6c37998b-bcc3-49e5-8ceb-d218881dae0e" x="507" y="68" width="48" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total_1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6f11ac94-a3ff-49f0-8120-de8b2eedf127" x="507" y="16" width="48" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{subtotal_1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9223820d-4098-4315-a587-6a2a4544f792" x="507" y="42" width="48" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{impuesto_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="e5f24d8e-0adf-487e-8fc9-d405dbe7bce8" x="399" y="16" width="108" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+					<paragraph rightIndent="3"/>
+				</textElement>
+				<text><![CDATA[SUBTOTAL BRUTO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e5f24d8e-0adf-487e-8fc9-d405dbe7bce8" x="399" y="42" width="108" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+					<paragraph rightIndent="3"/>
+				</textElement>
+				<text><![CDATA[IGV BRUTO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e5f24d8e-0adf-487e-8fc9-d405dbe7bce8" x="399" y="68" width="108" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+					<paragraph rightIndent="3"/>
+				</textElement>
+				<text><![CDATA[TOTAL BRUTO:]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

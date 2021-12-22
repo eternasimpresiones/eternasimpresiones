@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gteperu.erp.everest.mappers.ModuloMapper">
+    <resultMap id="rmModulo" type="org.gteperu.erp.everest.domain.Modulo">
+        <result property="idmodulo"   column="idmodulo" />
+        <result property="descripcion"   column="descripcion" />
+        <result property="icono"   column="icono" />
+        <result property="raiz"   column="raiz" />
+        <result property="estado"   column="estado" />
+         <result property="orden"   column="orden" />
+    </resultMap>
+    <resultMap id="rmTotal" type="org.gteperu.erp.everest.domain.Pagination">
+        <result property="cantidad"   column="cantidad" />
+    </resultMap>
+    <select id="retornaModuloPorEstado"  resultMap="rmModulo">
+        select idmodulo,descripcion,raiz,icono,estado,orden from modulo
+        <if test="modulo.estado != null and modulo.estado != '' and modulo.estado ==1">           
+            where estado =1
+        </if>
+        <if test="modulo.estado != null and modulo.estado != '' and modulo.estado ==2">           
+            where estado =0
+        </if>
+        <if test="modulo.offset != null and modulo.limit != null">           
+            offset #{modulo.offset} limit #{modulo.limit}
+        </if>
+    </select>
+    <select id="retornaModuloLikePorNombre"  resultMap="rmModulo">
+        select idmodulo,descripcion,raiz,icono,estado from modulo where upper(descripcion) like upper(concat('%',#{modulo.descripcion},'%'))    
+        <if test="modulo.offset != null and modulo.limit != null">           
+            offset #{modulo.offset} limit #{modulo.limit}
+        </if>
+    </select>
+    <select id="retornaCantidadList"  resultMap="rmTotal">
+        select count(*) as cantidad from modulo 
+        <if test="modulo.estado != null and modulo.estado != '' and modulo.estado ==1">           
+            where estado =1
+        </if>
+        <if test="modulo.estado != null and modulo.estado != '' and modulo.estado ==2">           
+            where estado =0
+        </if>       
+    </select>
+</mapper>

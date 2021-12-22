@@ -1,0 +1,778 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="org.gteperu.erp.everest.mappers.DocumentoMapper">
+
+	<resultMap id="rmDocumento"
+		type="org.gteperu.erp.everest.domain.Documento">
+		<result property="id_doc" column="id_doc" />
+		<result property="serie_doc" column="serie_doc" />
+		<result property="nro_doc" column="nro_doc" />
+		<result property="cod_prov_cli" column="cod_prov_cli" />
+		<result property="razon_social" column="razon_social" />
+		<result property="fecha_doc" column="fecha_doc" />
+		<result property="total_doc_mn" column="total_doc_mn" />
+		<result property="total_doc_me" column="total_doc_me" />
+		<result property="fecha_operacion" column="fecha_operacion" />
+		<result property="fecha_emision" column="fecha_emision" />
+		<result property="fecha_vcto" column="fecha_vcto" />
+		<result property="total_igv" column="total_igv" />
+		<result property="total_isc" column="total_isc" />
+		<result property="estado" column="estado" />
+		<result property="tipo_moneda" column="tipo_moneda" />
+		<result property="id_ingreso" column="id_ingreso" />
+		<result property="id_almacen" column="id_almacen" />
+		<result property="base_impo_mn" column="base_impo_mn" />
+		<result property="tipo_cambio" column="tipo_cambio" />
+		<result property="tipo_doc" column="tipo_doc" />
+		<result property="idlocal" column="idlocal" />
+		<result property="bdocborrador" column="bdocborrador" />
+		<result property="direccion_fiscal_cliente"
+			column="direccion_fiscal_cliente" />
+		<collection property="lsdet_doc" javaType="ArrayList"
+			ofType="org.gteperu.erp.everest.domain.Det_doc" column="id_doc"
+			resultMap="rmDet_doc" />
+
+	</resultMap>
+
+	<resultMap id="rmDet_doc"
+		type="org.gteperu.erp.everest.domain.Det_doc">
+		<result property="costo_unitario_mn" column="costo_unitario_mn" />
+		<result property="cant_regist_docu" column="cant_regist_docu" />
+		<result property="id_producto" column="id_producto" />
+		<result property="costo_unitario_me" column="costo_unitario_me" />
+		<result property="cuenta_contable" column="cuenta_contable" />
+		<result property="cant_regist_docu" column="cant_regist" />
+		<association property="producto"
+			javaType="org.gteperu.erp.everest.domain._Producto"
+			column="id_producto" resultMap="rmProducto" />
+	</resultMap>
+
+	<resultMap id="rmProducto"
+		type="org.gteperu.erp.everest.domain._Producto">
+		<result property="codigo_producto_interno"
+			column="procodigo_producto_interno" />
+		<result property="descripcion" column="prodescripcion" />
+		<result property="nombre_producto" column="pronombre_producto" />
+	</resultMap>
+
+	<resultMap id="rmDocumentofac"
+		type="org.gteperu.erp.everest.domain._DocumentoCpe">
+		<result property="id_documento" column="id_documento" />
+		<result property="id_empresa" column="id_empresa_d" />
+		<result property="total_gravadas" column="total_gravadas" />
+		<result property="total_inafecta" column="total_inafecta" />
+		<result property="total_exoneradas" column="total_exoneradas" />
+		<result property="total_gratuitas" column="total_gratuitas" />
+		<result property="total_percepciones"
+			column="total_percepciones" />
+		<result property="total_retenciones" column="total_retenciones" />
+		<result property="total_detracciones"
+			column="total_detracciones" />
+		<result property="total_bonificaciones"
+			column="total_bonificaciones" />
+		<result property="total_descuento" column="total_descuento" />
+		<result property="sub_total" column="sub_total" />
+
+		<result property="des" column="desc_unidad_med" />
+
+		<result property="id_cliente_cpe" column="id_cliented" />
+		<result property="serie_comprobante" column="serie_comprobante" />
+		<result property="nro_comprobante" column="nro_comprobante" />
+		<result property="fecha_documento" column="fecha_documento" />
+		<result property="fecha_vto" column="fecha_vto" />
+		<result property="cod_moneda" column="cod_moneda" />
+		<result property="estado" column="estado" />
+		<result property="observacion" column="observacion" />
+		<result property="cod_tipo_documento"
+			column="cod_tipo_documento" />
+		<result property="tipo_operacion" column="tipo_operacion" />
+		<result property="total_igv" column="total_igv" />
+		<result property="total_isc" column="total_isc" />
+		<result property="total_otr_imp" column="total_otr_imp" />
+		<result property="total" column="total" />
+		<result property="estado_pagado" column="estado_pagado" />
+		<result property="tipo_cambio" column="tipo_cambio" />
+		<result property="porcentaje_descuento"
+			column="porcentaje_descuento" />
+		<result property="tipo_comprobante_modifica"
+			column="tipo_comprobante_modifica" />
+		<result property="nro_documento_modifica"
+			column="nro_documento_modifica" />
+		<result property="cod_tipo_motivo" column="cod_tipo_motivo" />
+		<result property="descripcion_motivo"
+			column="descripcion_motivo" />
+		<result property="total_letras" column="total_letras" />
+		<result property="ruta_archivo" column="ruta_archivo" />
+		<result property="peso_bruto" column="peso_bruto" />
+		<result property="cod_motivo_traslado"
+			column="cod_motivo_traslado" />
+		<result property="cod_modalidad_traslado"
+			column="cod_modalidad_traslado" />
+		<result property="descripcion_motivo_traslado"
+			column="descripcion_motivo_traslado" />
+		<result property="cod_ubigeo_origen" column="cod_ubigeo_origen" />
+		<result property="cod_ubigeo_destino"
+			column="cod_ubigeo_destino" />
+		<result property="direccion_origen" column="direccion_origen" />
+		<result property="direccion_destino" column="direccion_destino" />
+		<result property="cod_tipo_doc_chofer"
+			column="cod_tipo_doc_chofer" />
+		<result property="nro_doc_chofer" column="nro_doc_chofer" />
+		<result property="placa_vehiculo" column="placa_vehiculo" />
+		<result property="fecha_inicio_traslado"
+			column="fecha_inicio_traslado" />
+		<result property="tipo_documento_transportista"
+			column="tipo_documento_transportista" />
+		<result property="nro_documento_transportista"
+			column="nro_documento_transportista" />
+		<result property="porcentaje_detraccion"
+			column="porcentaje_detraccion" />
+		<result property="tipo_detraccion" column="tipo_detraccion" />
+		<result property="nro_doc" column="numero_doc" />
+		<result property="razon_social" column="razon_doc" />
+		<result property="idlocal" column="idlocal" />
+		<result property="bdocborrador" column="bdocborrador" />
+		<result property="bdocborradortmp" column="bdocborrador" />
+		<result property="nombreTipoComprobante"
+			column="nombreTipoComprobante" />
+		<result property="tfecha_registro" column="tfecha_registro" />
+		<result property="direccion_fiscal_cliente"
+			column="direccion_fiscal_cliente" />
+		<result property="idsutipodocumento"
+			column="cod_tipo_documento" />
+		<result property="cod_forma_pago" column="cod_forma_pago" />
+		<association property="clientes"
+			javaType="org.gteperu.erp.everest.domain._Clientes"
+			column="id_cliente" resultMap="rmCliente" />
+		<association property="company"
+			javaType="org.gteperu.erp.everest.domain._Company"
+			column="id_empresa" resultMap="rmCompany" />
+		<collection property="ls_documentoCpe" javaType="ArrayList"
+			ofType="org.gteperu.erp.everest.domain._DocumentoCpe_DetalleBean"
+			column="id_documento" resultMap="rmDet_doc_fac" />
+
+	</resultMap>
+
+
+	<resultMap id="rmDocumentofacEstado"
+		type="org.gteperu.erp.everest.domain._DocumentoCpe">
+		<result property="id_documento" column="id_documento" />
+		<result property="id_empresa" column="id_empresa_d" />
+		<result property="total_gravadas" column="total_gravadas" />
+		<result property="total_inafecta" column="total_inafecta" />
+		<result property="total_exoneradas" column="total_exoneradas" />
+		<result property="total_gratuitas" column="total_gratuitas" />
+		<result property="total_percepciones"
+			column="total_percepciones" />
+		<result property="total_retenciones" column="total_retenciones" />
+		<result property="total_detracciones"
+			column="total_detracciones" />
+		<result property="total_bonificaciones"
+			column="total_bonificaciones" />
+		<result property="total_descuento" column="total_descuento" />
+		<result property="sub_total" column="sub_total" />
+		<result property="id_cliente_cpe" column="id_cliented" />
+		<result property="serie_comprobante" column="serie_comprobante" />
+		<result property="nro_comprobante" column="nro_comprobante" />
+		<result property="fecha_documento" column="fecha_documento" />
+		<result property="fecha_vto" column="fecha_vto" />
+		<result property="cod_moneda" column="cod_moneda" />
+		<result property="estado" column="estado" />
+		<result property="observacion" column="observacion" />
+		<result property="cod_tipo_documento"
+			column="cod_tipo_documento" />
+		<result property="tipo_operacion" column="tipo_operacion" />
+		<result property="total_igv" column="total_igv" />
+		<result property="total_isc" column="total_isc" />
+		<result property="total_otr_imp" column="total_otr_imp" />
+		<result property="total" column="total" />
+		<result property="estado_pagado" column="estado_pagado" />
+		<result property="tipo_cambio" column="tipo_cambio" />
+		<result property="porcentaje_descuento"
+			column="porcentaje_descuento" />
+		<result property="tipo_comprobante_modifica"
+			column="tipo_comprobante_modifica" />
+		<result property="nro_documento_modifica"
+			column="nro_documento_modifica" />
+		<result property="cod_tipo_motivo" column="cod_tipo_motivo" />
+		<result property="descripcion_motivo"
+			column="descripcion_motivo" />
+		<result property="total_letras" column="total_letras" />
+		<result property="ruta_archivo" column="ruta_archivo" />
+		<result property="peso_bruto" column="peso_bruto" />
+		<result property="cod_motivo_traslado"
+			column="cod_motivo_traslado" />
+		<result property="cod_modalidad_traslado"
+			column="cod_modalidad_traslado" />
+		<result property="descripcion_motivo_traslado"
+			column="descripcion_motivo_traslado" />
+		<result property="cod_ubigeo_origen" column="cod_ubigeo_origen" />
+		<result property="cod_ubigeo_destino"
+			column="cod_ubigeo_destino" />
+		<result property="direccion_origen" column="direccion_origen" />
+		<result property="direccion_destino" column="direccion_destino" />
+		<result property="cod_tipo_doc_chofer"
+			column="cod_tipo_doc_chofer" />
+		<result property="nro_doc_chofer" column="nro_doc_chofer" />
+		<result property="placa_vehiculo" column="placa_vehiculo" />
+		<result property="fecha_inicio_traslado"
+			column="fecha_inicio_traslado" />
+		<result property="tipo_documento_transportista"
+			column="tipo_documento_transportista" />
+		<result property="nro_documento_transportista"
+			column="nro_documento_transportista" />
+		<result property="porcentaje_detraccion"
+			column="porcentaje_detraccion" />
+		<result property="tipo_detraccion" column="tipo_detraccion" />
+		<result property="por_igv" column="por_igv" />
+		<result property="idlocal" column="idlocal" />
+		<result property="direccion_fiscal_cliente"
+			column="direccion_fiscal_cliente" />
+		<result property="idsutipodocumento"
+			column="cod_tipo_documento" />
+		<collection property="detalle" javaType="ArrayList"
+			ofType="org.gteperu.erp.everest.domain._DocumentoCpe_DetalleBean"
+			column="id_documento" resultMap="rmDet_doc_fac" />
+		<collection property="detalle_Guia" javaType="ArrayList"
+			ofType="org.gteperu.erp.everest.domain._CpeGuiaRemisionDetalleBean"
+			column="id_documento" resultMap="rmDet_doc_Guia" />
+	</resultMap>
+
+	<resultMap id="rmDet_doc_fac"
+		type="org.gteperu.erp.everest.domain._DocumentoCpe_DetalleBean">
+		<result property="id_detalle_documento"
+			column="id_detalle_documento" />
+		<result property="id_documento" column="id_documento_dd" />
+		<result property="id_empresa" column="id_empresa_dd" />
+		<result property="item" column="item" />
+		<result property="total_inafecta" column="total_inafecta_dd" />
+		<result property="unidad_medida" column="unidad_medida" />
+		<result property="id_producto" column="id_productodetalle" />
+		<result property="cantidad" column="cantidad" />
+		<result property="precio" column="precio" />
+		<result property="precio_tipo_codigo"
+			column="precio_tipo_codigo" />
+		<result property="igv" column="igv" />
+		<result property="isc" column="isc" />
+		<result property="codigo" column="codigo" />
+		<result property="descripcion" column="descripcion" />
+		<result property="cod_sunat" column="cod_sunat" />
+		<result property="cod_tipo_operacion"
+			column="cod_tipo_operacion" />
+		<result property="importe" column="importe" />
+		<!-- <<<<<<< HEAD -->
+
+		<result property="desc_unidad_med" column="des" />
+
+		<association property="producto"
+			javaType="org.gteperu.erp.everest.domain._Producto"
+			column="id_producto" resultMap="rmProducto" />
+
+		<!-- ======= <result property="desc_unidad_med" column="des" /> <association 
+			property="producto" javaType="org.gteperu.erp.everest.domain._Producto" column="id_producto" 
+			resultMap="rmProducto" /> >>>>>>> 1cd0c9e3d1fbe614602dc7710caed7978345b68a -->
+	</resultMap>
+
+	<resultMap id="rmDet_doc_Guia"
+		type="org.gteperu.erp.everest.domain._CpeGuiaRemisionDetalleBean">
+		<result property="ITEM" column="item" />
+		<result property="UNIDAD_MEDIDA" column="unidad_medida" />
+		<result property="CANTIDAD" column="cantidad" />
+		<result property="CODIGO" column="codigo" />
+		<result property="DESCRIPCION" column="descripcion" />
+	</resultMap>
+
+	<resultMap id="rmDocumentofacExcel"
+		type="org.gteperu.erp.everest.domain._DocumentoCpe_Excel">
+		<result property="serie_comprobante" column="serie_comprobante" />
+		<result property="nro_comprobante" column="nro_comprobante" />
+		<result property="descripcion_tipdocumento"
+			column="descripcion_st" />
+		<result property="razon_social" column="razon_doc" />
+		<result property="nro_doc" column="numero_doc" />
+		<result property="fecha_documento" column="fecha_documento" />
+		<result property="fecha_vto" column="fecha_vto" />
+		<result property="descripcion_tipoperacion"
+			column="descripcion_o" />
+		<result property="total_exoneradas" column="total_exoneradas" />
+		<result property="sub_total" column="sub_total" />
+		<result property="total" column="total" />
+		<result property="tipo_cambio" column="tipo_cambio" />
+		<result property="tipo_comprobante_modifica"
+			column="tipo_comprobante_modifica" />
+		<result property="nro_documento_modifica"
+			column="nro_documento_modifica" />
+		<result property="idlocal" column="idlocal" />
+		<result property="direccion_fiscal_cliente"
+			column="direccion_fiscal_cliente" />
+	</resultMap>
+
+	<resultMap id="rmCliente"
+		type="org.gteperu.erp.everest.domain._Clientes">
+		<result property="id_cliente" column="id_cliente" />
+		<result property="id_empresa" column="id_empresa" />
+		<result property="tipo_doc" column="tipo_doc" />
+		<result property="nro_doc" column="nro_doc" />
+		<result property="razon_social" column="razon_social" />
+		<result property="razon_comercial" column="razon_comercial" />
+		<result property="email" column="email" />
+		<result property="direccion_fiscal" column="direccion_fiscal" />
+		<result property="fijo" column="fijo" />
+		<result property="movil" column="movil" />
+		<result property="cuenta_detraccion" column="cuenta_detraccion" />
+		<result property="idubigeo" column="idubigeo" />
+	</resultMap>
+
+	<resultMap id="rmCompany"
+		type="org.gteperu.erp.everest.domain._Company">
+		<result property="id_empresa" column="id_empresa" />
+		<result property="nro_documento_empresa"
+			column="nro_documento_empresa" />
+		<result property="tipo_doc_empresa" column="tipo_doc_empresa" />
+		<result property="nombre_comercial_empresa"
+			column="nombre_comercial_empresa" />
+		<result property="codigo_ubigeo_empresa"
+			column="codigo_ubigeo_empresa" />
+		<result property="direccion_empresa" column="direccion_empresa" />
+		<result property="razon_social_empresa"
+			column="razon_social_empresa" />
+		<result property="usuario_sol_empresa"
+			column="usuario_sol_empresa" />
+		<result property="pass_sol_empresa" column="pass_sol_empresa" />
+		<result property="pass_firma_empresa"
+			column="pass_firma_empresa" />
+		<result property="idubigeo" column="idubigeo" />
+	</resultMap>
+
+	<!-- <select id="listarDocumento" resultMap="rmDocumentofac"> SELECT doc.id_documento, 
+		doc.id_empresa as id_empresa_d, doc.total_gravadas,doc.total_exoneradas,doc.estado,doc.estado_pagado,doc.tipo_cambio,doc.tipo_operacion, 
+		doc.sub_total, doc.fecha_documento,doc.fecha_vto, doc.cod_moneda,doc.nro_documento_modifica,doc.tipo_comprobante_modifica, 
+		doc.ruta_archivo,doc.total_detracciones, doc.observacion, doc.total_igv,doc.total,doc.serie_comprobante,doc.nro_comprobante,doc.cod_tipo_documento,doc.id_cliente 
+		as id_cliented,ddoc.cod_sunat,doc.tipo_detraccion,doc.porcentaje_detraccion, 
+		ddoc.id_detalle_documento, ddoc.id_documento AS id_documento_dd, ddoc.id_empresa 
+		as id_empresa_dd,ddoc.item,ddoc.precio_tipo_codigo,ddoc.codigo,ddoc.cod_tipo_operacion, 
+		ddoc.total_inafecta as total_inafecta_dd,ddoc.unidad_medida,ddoc.cantidad,ddoc.precio,ddoc.importe,ddoc.descripcion,ddoc.igv,ddoc.isc, 
+		c.id_cliente,c.tipo_doc,c.nro_doc,c.razon_social,c.razon_comercial,c.email,c.direccion_fiscal,c.movil 
+		FROM documento doc LEFT JOIN detalle_documento ddoc ON doc.id_documento=ddoc.id_documento 
+		LEFT JOIN cliente c on doc.id_cliente = c.id_cliente WHERE doc.id_empresa=#{docu.id_empresa} 
+		<if test="docu.fecha_inicio != null and docu.fecha_fin != null"> and doc.fecha_documento 
+		between #{docu.fecha_inicio} and #{docu.fecha_fin} <if test="docu.cod_tipo_documento 
+		!= null"> and doc.cod_tipo_documento = #{docu.cod_tipo_documento} </if> <if 
+		test="docu.estado != null"> and doc.estado = #{docu.estado} </if> </if> <if 
+		test="docu.offset != null and docu.limit != null"> order by doc.id_documento 
+		offset #{docu.offset} limit #{docu.limit} </if> </select> -->
+
+	<select id="listarDocumento" resultMap="rmDocumentofac">
+		SELECT doc.*, ddoc.cod_sunat,
+		ddoc.id_detalle_documento,
+		ddoc.id_documento AS id_documento_dd, ddoc.id_empresa as id_empresa_dd,ddoc.item,ddoc.precio_tipo_codigo,
+		ddoc.codigo,ddoc.cod_tipo_operacion,	ddoc.total_inafecta as
+		total_inafecta_dd,ddoc.unidad_medida,ddoc.cantidad,ddoc.precio,ddoc.importe,ddoc.descripcion,ddoc.igv,ddoc.isc,ddoc.id_producto
+		as id_productodetalle,	pro.codigo_producto_interno as	procodigo_producto_interno, pro.descripcion as
+		prodescripcion,	pro.nombre_producto as	pronombre_producto, c.id_cliente,c.tipo_doc,
+		c.nro_doc,c.razon_social,c.razon_comercial,c.email,c.direccion_fiscal,c.movil,um.desc_unidad_med as des
+		FROM
+		( select doc.id_documento, doc.id_empresa as id_empresa_d,
+		doc.total_gravadas,doc.total_exoneradas,doc.estado,doc.estado_pagado,doc.tipo_cambio,doc.tipo_operacion,
+		doc.sub_total, doc.fecha_documento,doc.fecha_vto,
+		doc.cod_moneda,doc.nro_documento_modifica,doc.tipo_comprobante_modifica,
+		doc.ruta_archivo,doc.total_detracciones,
+		doc.observacion,
+		doc.total_igv,doc.total,doc.serie_comprobante,doc.nro_comprobante,doc.cod_tipo_documento,doc.id_cliente
+		,doc.tipo_detraccion,doc.porcentaje_detraccion,doc.direccion_fiscal_cliente,doc.idlocal
+		,doc.bdocborrador,doc.cod_tipo_documento,doc.cod_forma_pago
+		FROM
+		documento doc
+		WHERE doc.id_empresa=#{docu.id_empresa}
+		<if test="docu.idlocal != null">
+			and doc.idlocal = #{docu.idlocal}
+		</if>
+		<if test="docu.fecha_inicio != null and docu.fecha_fin != null">
+			and doc.fecha_documento between #{docu.fecha_inicio} and
+			#{docu.fecha_fin}
+		</if>
+		<if test="docu.fecha_inicio != null and docu.fecha_fin == null">
+			and doc.fecha_documento >= #{docu.fecha_inicio}
+		</if>
+		<if test="docu.fecha_inicio == null and docu.fecha_fin != null">
+			and #{docu.fecha_fin} >= doc.fecha_documento
+		</if>
+		<if test="docu.cod_tipo_documento != null">
+			and doc.cod_tipo_documento = #{docu.cod_tipo_documento}
+		</if>
+		<if test="docu.estado != null">
+			and doc.estado = #{docu.estado}
+		</if>
+		<if test="docu.offset != null and docu.limit != null">
+			order by doc.id_documento offset #{docu.offset} limit
+			#{docu.limit}
+		</if>
+		) as doc
+		LEFT JOIN detalle_documento ddoc ON
+		doc.id_documento=ddoc.id_documento
+		LEFT JOIN cliente c on
+		doc.id_cliente = c.id_cliente
+		LEFT JOIN unidades_medida um ON
+		ddoc.unidad_medida=um.abrv_unidad_med
+		LEFT JOIN producto pro ON
+		ddoc.id_producto = pro.id_producto
+	</select>
+
+
+	<select id="listarDocumentoPublico" resultMap="rmDocumentofac">
+		SELECT doc.*,
+		ddoc.cod_sunat,
+		ddoc.id_detalle_documento, ddoc.id_documento AS
+		id_documento_dd, ddoc.id_empresa as
+		id_empresa_dd,ddoc.item,ddoc.precio_tipo_codigo,ddoc.codigo,ddoc.cod_tipo_operacion,
+		ddoc.total_inafecta as
+		total_inafecta_dd,ddoc.unidad_medida,ddoc.cantidad,ddoc.precio,ddoc.importe,ddoc.descripcion,ddoc.igv,ddoc.isc,
+		c.id_cliente,c.tipo_doc,c.nro_doc,c.razon_social,c.razon_comercial,c.email,c.direccion_fiscal,c.movil
+		FROM
+		( select doc.id_documento, doc.id_empresa as id_empresa_d,
+		doc.total_gravadas,doc.total_exoneradas,doc.estado,doc.estado_pagado,doc.tipo_cambio,doc.tipo_operacion,
+		doc.sub_total, doc.fecha_documento,doc.fecha_vto,
+		doc.cod_moneda,doc.nro_documento_modifica,doc.tipo_comprobante_modifica,
+		doc.ruta_archivo,doc.total_detracciones,
+		doc.observacion,
+		doc.total_igv,doc.total,doc.serie_comprobante,doc.nro_comprobante,doc.cod_tipo_documento,doc.id_cliente
+		,doc.tipo_detraccion,doc.porcentaje_detraccion,doc.direccion_fiscal_cliente,doc.idlocal
+		FROM documento doc
+		WHERE
+		doc.cod_tipo_documento=#{docu.cod_tipo_documento}
+		and
+		doc.nro_comprobante=#{docu.nro_comprobante}
+		and
+		doc.serie_comprobante=#{docu.serie_comprobante}
+		and
+		doc.total=#{docu.total}
+		and ( EXTRACT(MONTH FROM
+		doc.fecha_documento)=EXTRACT(MONTH FROM
+		cast(#{docu.fecha_documento} as
+		timestamp)) )
+		and ( EXTRACT(YEAR FROM doc.fecha_documento)=EXTRACT(YEAR
+		FROM
+		cast(#{docu.fecha_documento} as timestamp)) )
+		and ( EXTRACT(DAY
+		FROM doc.fecha_documento)=EXTRACT(DAY FROM
+		cast(#{docu.fecha_documento} as timestamp)) )
+		and doc.estado = 1
+		) as
+		doc
+		LEFT JOIN detalle_documento ddoc ON
+		doc.id_documento=ddoc.id_documento
+		LEFT JOIN cliente c on
+		doc.id_cliente = c.id_cliente
+		INNER JOIN company
+		comp on
+		comp.id_empresa=doc.id_empresa_d and
+		comp.nro_documento_empresa=#{docu.nro_documento_empresa}
+	</select>
+
+
+	<select id="cantidadDocumentos" resultType="int">
+		SELECT count(*) FROM documento
+		WHERE id_empresa = #{doc.id_empresa}
+		<if test="doc.idlocal != null">
+			and idlocal = #{doc.idlocal}
+		</if>
+
+		<if test="doc.fecha_inicio != null and doc.fecha_fin != null">
+			and fecha_documento between #{doc.fecha_inicio} and
+			#{doc.fecha_fin}
+
+		</if>
+		<if test="doc.fecha_inicio != null and doc.fecha_fin == null">
+			and fecha_documento >= #{doc.fecha_inicio}
+
+		</if>
+		<if test="doc.fecha_inicio == null and doc.fecha_fin != null">
+			and #{doc.fecha_fin} >= fecha_documento
+		</if>
+
+		<if test="doc.cod_tipo_documento != null">
+			and cod_tipo_documento = #{doc.cod_tipo_documento}
+		</if>
+		<if test="doc.estado != null">
+			and estado = #{doc.estado}
+		</if>
+
+	</select>
+
+	<select id="listarDocumentoxEstado"
+		resultMap="rmDocumentofacEstado">
+		SELECT doc.id_documento, doc.id_empresa as id_empresa_d,
+		doc.total_gravadas,doc.estado,doc.estado_pagado,doc.tipo_cambio,doc.tipo_operacion,
+		doc.sub_total, doc.fecha_documento,doc.fecha_vto,
+		doc.cod_moneda,doc.nro_documento_modifica,doc.tipo_comprobante_modifica,
+		doc.ruta_archivo,doc.total_detracciones,
+		doc.observacion,doc.total_igv,doc.total,doc.serie_comprobante,doc.nro_comprobante,doc.cod_tipo_documento,doc.id_cliente
+		as
+		id_cliented,ddoc.cod_sunat,doc.tipo_detraccion,doc.porcentaje_detraccion,
+		doc.tipo_comprobante_modifica, doc.nro_documento_modifica,
+		doc.cod_tipo_motivo, doc.descripcion_motivo,
+		doc.total_letras,doc.peso_bruto,doc.cod_motivo_traslado,doc.cod_modalidad_traslado,
+		doc.descripcion_motivo_traslado,doc.cod_ubigeo_origen,doc.cod_ubigeo_destino,doc.direccion_origen,doc.direccion_destino,doc.cod_tipo_doc_chofer,doc.nro_doc_chofer,
+		doc.placa_vehiculo,doc.fecha_inicio_traslado,doc.tipo_documento_transportista,doc.nro_documento_transportista,
+		doc.direccion_fiscal_cliente , doc.idlocal ,
+		ddoc.id_detalle_documento, ddoc.id_documento AS id_documento_dd,
+		ddoc.id_empresa as
+		id_empresa_dd,ddoc.item,ddoc.precio_tipo_codigo,ddoc.codigo,ddoc.cod_tipo_operacion,
+		ddoc.total_inafecta as
+		total_inafecta_dd,ddoc.unidad_medida,ddoc.cantidad,ddoc.precio,ddoc.importe,ddoc.descripcion,ddoc.igv,ddoc.isc,doc.por_igv
+		FROM documento doc
+		LEFT JOIN detalle_documento ddoc ON
+		doc.id_documento=ddoc.id_documento
+		WHERE doc.estado=#{docu.estado}
+
+	</select>
+
+	<select id="retornaDocumentoPorId" resultMap="rmDocumentofac">
+		SELECT
+		doc.id_documento, doc.id_empresa as id_empresa_d, doc.total_gravadas,
+		doc.total_inafecta, doc.total_exoneradas, doc.total_gratuitas,
+		doc.total_percepciones,doc.porcentaje_descuento,
+		doc.total_retenciones, doc.total_detracciones,
+		doc.total_bonificaciones, doc.total_descuento, doc.sub_total,
+		doc.id_cliente as id_cliented, doc.serie_comprobante,
+		doc.nro_comprobante, doc.fecha_documento, doc.fecha_vto,
+		doc.cod_moneda, doc.estado, doc.observacion, doc.cod_tipo_documento,
+		doc.tipo_operacion, doc.total_igv,
+		doc.total_isc, doc.total_otr_imp,
+		doc.total, doc.estado_pagado,
+		doc.tipo_cambio,doc.idlocal
+		,doc.bdocborrador
+		doc.tipo_comprobante_modifica,
+		nro_documento_modifica,
+		cod_tipo_motivo, descripcion_motivo,
+		total_letras,doc.direccion_fiscal_cliente ,
+		dd.id_detalle_documento,
+		dd.id_documento as id_documento_dd, dd.item,dd.total_inafecta as
+		total_inafecta_dd, dd.unidad_medida, dd.cantidad, dd.precio,
+		dd.importe, dd.precio_tipo_codigo, dd.igv, dd.isc, dd.codigo,
+		dd.descripcion, dd.cod_sunat,dd.cod_tipo_operacion,
+		c.id_cliente,
+		c.id_empresa, c.tipo_doc, c.nro_doc, c.razon_social,
+		c.razon_comercial, c.email, c.direccion_fiscal,c.idubigeo, c.fijo,
+		c.movil, c.cuenta_detraccion,
+		pro.codigo_producto_interno as
+		procodigo_producto_interno, pro.descripcion as prodescripcion,
+		pro.nombre_producto as pronombre_producto
+		from documento doc
+		inner join
+		detalle_documento dd on doc.id_documento = dd.id_documento
+		left
+		join
+		producto pro on dd.id_producto = pro.id_producto
+		inner join
+		cliente c on
+		c.id_cliente = doc.id_cliente
+		where doc.id_documento
+		=#{docu.id_documento}
+	</select>
+
+	<select id="retornaDocumentoPorSerieNum"
+		resultMap="rmDocumentofac">
+		SELECT doc.id_documento, doc.id_empresa as id_empresa_d,
+		doc.id_cliente as id_cliented, doc.total_gravadas, doc.total_inafecta,
+		doc.total_exoneradas, doc.total_gratuitas,
+		doc.total_percepciones,doc.porcentaje_descuento,
+		doc.total_retenciones, doc.total_detracciones,
+		doc.total_bonificaciones,
+		doc.total_descuento, doc.sub_total,
+		doc.fecha_documento, doc.fecha_vto,
+		doc.cod_moneda, doc.estado,
+		doc.observacion, doc.cod_tipo_documento,
+		doc.tipo_operacion,
+		doc.total_igv,
+		doc.total_isc, doc.total_otr_imp, doc.total,
+		doc.estado_pagado, doc.tipo_cambio,
+		doc.direccion_fiscal_cliente
+		,doc.idlocal ,
+		doc.tipo_comprobante_modifica,
+		doc.nro_documento_modifica,
+		doc.cod_tipo_motivo,
+		doc.descripcion_motivo,
+		doc.total_letras,doc.peso_bruto,doc.cod_motivo_traslado,doc.cod_modalidad_traslado,
+		doc.descripcion_motivo_traslado,doc.cod_ubigeo_origen,doc.cod_ubigeo_destino,doc.direccion_origen,doc.direccion_destino,doc.cod_tipo_doc_chofer,doc.nro_doc_chofer,
+		doc.placa_vehiculo,doc.fecha_inicio_traslado,doc.tipo_documento_transportista,doc.nro_documento_transportista,
+		dd.id_detalle_documento, dd.id_documento as id_documento_dd,
+		dd.item,dd.total_inafecta as total_inafecta_dd, dd.unidad_medida,
+		dd.cantidad, dd.precio, dd.importe, dd.precio_tipo_codigo, dd.igv,
+		dd.isc, dd.codigo, dd.descripcion, dd.cod_sunat,dd.cod_tipo_operacion,
+		c.id_cliente, c.id_empresa, c.tipo_doc, c.nro_doc, c.razon_social,
+		c.razon_comercial, c.email, c.direccion_fiscal,c.idubigeo, c.fijo,
+		c.movil, c.cuenta_detraccion,
+		pro.codigo_producto_interno as
+		procodigo_producto_interno, pro.descripcion as prodescripcion,
+		pro.nombre_producto as pronombre_producto
+		from documento doc
+		inner join
+		detalle_documento dd on doc.id_documento = dd.id_documento
+		left join
+		producto pro on dd.id_producto = pro.id_producto
+		inner join cliente c
+		on c.id_cliente = doc.id_cliente
+		where doc.serie_comprobante
+		=#{docu.serie_comprobante}
+		and doc.nro_comprobante
+		=#{docu.nro_comprobante}
+		and doc.id_empresa =#{docu.id_empresa} and
+		doc.idlocal =#{docu.idlocal} and doc.estado = 1
+	</select>
+
+
+	<select id="retornaDocumentoCPEXML" resultMap="rmDocumentofac">
+		SELECT
+		doc.id_documento,c.id_empresa,c.nro_documento_empresa,doc.cod_tipo_documento,doc.serie_comprobante
+		,doc.nro_comprobante,doc.direccion_fiscal_cliente, doc.idlocal
+		FROM
+		documento doc
+		INNER JOIN company c ON c.id_empresa=doc.id_empresa
+		WHERE
+		doc.id_documento=#{docu.id_documento}
+	</select>
+
+	<select id="listarDocumentoIngreso" resultMap="rmDocumento">
+		SELECT doc.id_doc
+		AS id_doc, doc.serie_doc AS serie_doc, doc.nro_doc AS nro_doc,
+		doc.direccion_fiscal_cliente ,
+		doc.cod_prov_cli AS ruc,
+		doc.razon_social AS razon_social, doc.fecha_doc AS fecha_doc,
+		doc.idlocal ,
+		pro.codigo_producto_interno as
+		procodigo_producto_interno, pro.descripcion AS prodescripcion,
+		ddoc.costo_unitario AS costo_unitario, ddoc.cant_regist_docu AS
+		cant_regist
+		FROM ingreso ing
+		INNER JOIN documento doc ON
+		ing.id_ingreso=doc.id_ingreso
+		INNER JOIN det_doc ddoc ON
+		ddoc.id_doc=doc.id_doc
+		INNER JOIN producto pro ON
+		pro.id_producto=ddoc.id_producto
+		WHERE
+		doc.id_empresa=#{docu.id_empresa}
+		AND doc.pdo_ano =#{docu.pdo_ano}
+		AND
+		doc.pdo_mes =#{docu.pdo_mes}
+		AND ing.estado_guia=3 AND
+		ing.estado_documento=3
+	</select>
+
+	<select id="listarDocumentosReferencia" resultMap="rmDocumento">
+		SELECT
+		g.id_almacen,d.id_doc,d.serie_doc,d.nro_doc,d.total_doc_mn,d.total_doc_me,d.cod_prov_cli,d.razon_social,d.fecha_operacion,d.fecha_emision,
+		d.total_igv,d.total_isc,d.estado,d.fecha_vcto,d.direccion_fiscal_cliente
+		,d.idlocal ,
+		d.tipo_moneda,d.id_ingreso,d.base_impo_mn,d.tipo_cambio,d.tipo_doc,
+		dd.cant_regist_docu,dd.id_producto,dd.costo_unitario_me,dd.costo_unitario_mn,
+		dd.cuenta_contable,p.codigo_producto_interno as
+		procodigo_producto_interno,p.descripcion as prodescripcion
+		FROM ingreso
+		i
+		INNER JOIN documento d ON d.id_ingreso=i.id_ingreso
+		INNER JOIN guia g
+		ON
+		g.id_ingreso=i.id_ingreso
+		INNER JOIN det_doc dd ON dd.id_doc=d.id_doc
+		INNER JOIN producto p ON p.id_producto=dd.id_producto
+		WHERE
+		d.id_empresa=#{docu.id_empresa}
+		AND d.estado=1
+	</select>
+
+	<select id="retornaRutaArchivo" resultMap="rmDocumentofac">
+		select
+		d.serie_comprobante, d.nro_comprobante, c.nro_documento_empresa
+		from
+		documento d inner join company c on d.id_empresa = c.id_empresa
+		where
+		d.id_documento = #{documento.id_documento}
+	</select>
+
+	<select id="retornaDocumentoPorSerieNumIdEmpresa"
+		resultMap="rmDocumentofac">
+		SELECT doc.id_documento, doc.id_empresa as id_empresa_d,
+		doc.id_cliente as id_cliented, doc.total_gravadas, doc.total_inafecta,
+		doc.total_exoneradas, doc.total_gratuitas,
+		doc.total_percepciones,doc.porcentaje_descuento,
+		doc.total_retenciones, doc.total_detracciones,
+		doc.total_bonificaciones,
+		doc.total_descuento, doc.sub_total,
+		doc.fecha_documento,
+		doc.fecha_vto,doc.direccion_fiscal_cliente ,
+		doc.cod_moneda, doc.estado, doc.observacion, doc.cod_tipo_documento,
+		doc.tipo_operacion, doc.total_igv,
+		doc.total_isc, doc.total_otr_imp,
+		doc.total, doc.estado_pagado, doc.tipo_cambio,
+		doc.idlocal ,
+		doc.tipo_comprobante_modifica, nro_documento_modifica,
+		cod_tipo_motivo, descripcion_motivo,
+		total_letras,
+		dd.id_detalle_documento, dd.id_documento as id_documento_dd,
+		dd.item,dd.total_inafecta as
+		total_inafecta_dd, dd.unidad_medida,
+		dd.cantidad, dd.precio, dd.importe, dd.precio_tipo_codigo, dd.igv,
+		dd.isc,
+		dd.codigo, dd.descripcion, dd.cod_sunat,dd.cod_tipo_operacion,
+		c.id_cliente, c.id_empresa, c.tipo_doc, c.nro_doc, c.razon_social,
+		c.razon_comercial, c.email, c.direccion_fiscal,c.idubigeo, c.fijo,
+		c.movil, c.cuenta_detraccion,
+		pro.codigo_producto_interno as
+		procodigo_producto_interno, pro.descripcion as prodescripcion,
+		pro.nombre_producto as pronombre_producto
+		from documento doc
+		inner join
+		detalle_documento dd on doc.id_documento = dd.id_documento
+		left join
+		producto pro on dd.id_producto = pro.id_producto
+		inner join cliente c
+		on c.id_cliente = doc.id_cliente
+		where doc.serie_comprobante
+		=#{docu.serie_comprobante} and doc.nro_comprobante
+		=#{docu.nro_comprobante} and doc.id_empresa =#{docu.id_empresa} and
+		doc.estado = 1
+	</select>
+
+	<select id="retornaDocumentoPorIddocumentoExcel"
+		resultMap="rmDocumentofac">
+		select doc.serie_comprobante,doc.nro_comprobante,st.descripcion as
+		nombreTipoComprobante
+		,c.razon_social , doc.idlocal, doc.total_igv,
+		c.nro_doc ,doc.fecha_registro as
+		tfecha_registro,
+		doc.fecha_documento,doc.fecha_vto,o.descripcion
+		,doc.total_exoneradas,
+		doc.direccion_fiscal_cliente,
+		doc.sub_total,doc.total,doc.tipo_cambio,doc.tipo_comprobante_modifica,
+		doc.nro_documento_modifica FROM documento doc
+		inner join cliente c on
+		doc.id_cliente = c.id_cliente
+		left join sutipodocumento st on
+		doc.cod_tipo_documento = st.codigosunat
+		left join sutipooperacion o on
+		doc.tipo_operacion = o.codigosunat
+		WHERE
+		doc.id_empresa=#{docu.id_empresa}
+		<if test="docu.idlocal != null">
+			and doc.idlocal = #{docu.idlocal}
+		</if>
+
+		<if test="docu.fecha_inicio != null and docu.fecha_fin != null">
+			and doc.fecha_documento between #{docu.fecha_inicio} and
+			#{docu.fecha_fin}
+			<if test="docu.cod_tipo_documento != null">
+				and doc.cod_tipo_documento = #{docu.cod_tipo_documento}
+			</if>
+			<if test="docu.estado != null">
+				and doc.estado = #{docu.estado}
+			</if>
+		</if>
+		<if test="docu.offset != null and docu.limit != null">
+			order by doc.id_documento offset #{docu.offset} limit
+			#{docu.limit}
+		</if>
+	</select>
+</mapper>

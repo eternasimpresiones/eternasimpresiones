@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="voucherdetalle" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b16ae844-5fc0-49b0-870b-0a84ed056640">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idempresa" class="java.lang.Integer"/>
+	<parameter name="idtranspagoscobranza" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT d.iddetalletranspagoscobranza, d.idtranspagoscobranza, d.iddocumentos,dos.total as totaldocumento,
+       d.importesoles, d.importedolares, d.tipodecambio, d.estado, d.fecharegistro,
+       dos.codigo,dos.serie,su.descripcion as tipodocsunat,su.codigosunat,cl.nombre as nombrecliente,td.descripcion as nombremoneda,td.simbolo
+  FROM detalletranspagoscobranza d
+  left join documentos dos on dos.iddocumentos=d.iddocumentos
+  inner join sutipocomprovantepagodocumento su on su.idsutipocomprovantepagodocumento=dos.idsutipocomprovantepagodocumento
+  left join clientes cl on cl.idclientes=dos.idcliente left join tipomoneda td on td.idtipomoneda =dos.idtipomoneda
+where d.idtranspagoscobranza=$P{idtranspagoscobranza} and  dos.idempresa=$P{idempresa};]]>
+	</queryString>
+	<field name="iddetalletranspagoscobranza" class="java.lang.Integer"/>
+	<field name="idtranspagoscobranza" class="java.lang.Integer"/>
+	<field name="iddocumentos" class="java.lang.Integer"/>
+	<field name="totaldocumento" class="java.lang.Double"/>
+	<field name="importesoles" class="java.lang.Double"/>
+	<field name="importedolares" class="java.lang.Double"/>
+	<field name="tipodecambio" class="java.lang.Double"/>
+	<field name="estado" class="java.lang.Integer"/>
+	<field name="fecharegistro" class="java.sql.Timestamp"/>
+	<field name="codigo" class="java.lang.String"/>
+	<field name="serie" class="java.lang.String"/>
+	<field name="tipodocsunat" class="java.lang.String"/>
+	<field name="codigosunat" class="java.lang.String"/>
+	<field name="nombrecliente" class="java.lang.String"/>
+	<field name="nombremoneda" class="java.lang.String"/>
+	<field name="simbolo" class="java.lang.String"/>
+	<variable name="importesoles_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{importesoles}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="18" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="13db5be6-4d07-4803-a1b9-c5743170229b" x="0" y="1" width="115" height="15"/>
+				<textElement/>
+				<text><![CDATA[CLIENTE/PROVEEDOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9f978c2a-e40b-4075-a999-c52e973f0b3d" x="129" y="1" width="100" height="15"/>
+				<textElement/>
+				<text><![CDATA[TIPO DOCUMENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c7d95ba4-7593-401d-ba51-0ba265766e1e" x="229" y="1" width="100" height="15"/>
+				<textElement/>
+				<text><![CDATA[N° DOCUMENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1895b027-75ee-4bf5-9669-15bc03417c33" x="329" y="1" width="100" height="15"/>
+				<textElement/>
+				<text><![CDATA[TOTAL DOCUMENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3267b324-8f27-4d52-aaec-cc4d7b630ef9" x="455" y="1" width="100" height="15"/>
+				<textElement/>
+				<text><![CDATA[IMPORTE PAGADO]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="7f23cb9f-51f7-4431-94f3-17103feb0d26" x="0" y="16" width="550" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="fbfd99f0-9198-4937-86f6-aef20a8b8bd5" x="0" y="0" width="129" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{nombrecliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="40a3a702-ef1c-4974-bf70-0dd658a8d703" x="129" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{tipodocsunat}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b2b126a3-9c9a-409b-a74e-6c9c98cba300" x="229" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{codigosunat}+"-"+$F{serie}+"-"+$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="28f4bf59-67c0-4c9a-b3dc-a0223a473403" x="455" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{simbolo}+""+$F{importesoles}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e18d6ec3-81ed-480a-be2c-325a81dea4d2" x="329" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{simbolo}+""+$F{totaldocumento}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="50">
+			<textField>
+				<reportElement uuid="91df7de2-c053-4068-8dd8-ebe2f4c45670" x="456" y="5" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{simbolo}+""+$V{importesoles_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="13db5be6-4d07-4803-a1b9-c5743170229b" x="329" y="5" width="115" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[TOTAL PAGADO:]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="96723d44-b9ea-487e-a568-ca22569d6777" x="299" y="5" width="250" height="1"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

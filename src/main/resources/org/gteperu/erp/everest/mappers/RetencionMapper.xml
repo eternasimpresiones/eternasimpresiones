@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gteperu.erp.everest.mappers.RetencionMapper">
+	
+	<resultMap id="rmRetencion" type="org.gteperu.erp.everest.domain._Retencion">
+		<result property="id_retencion" column="id_retencion" />
+		<result property="id_empresa" column="id_empresa" />
+		<result property="id_cliente" column="id_cliente" />
+				<result property="total_retencion" column="total_retencion" />
+				<result property="neto_retencion" column="neto_retencion" />
+				<result property="fecha_emision_str" column="fecha_registro" />
+				<result property="zona_urbanizacion_empresa" column="zona_urbanizacion_empresa" />
+				<result property="cod_pais_empresa" column="cod_pais_empresa" />
+				<result property="zona_urbanizacion_proveedor" column="zona_urbanizacion_proveedor" />
+				<result property="ciudad_proveedor" column="ciudad_proveedor" />
+				<result property="pais_proveedor" column="pais_proveedor" />
+				<result property="tipo_retencion" column="tipo_retencion" />
+				<result property="porcentaje_retencion" column="porcentaje_retencion" />
+				<result property="cod_moneda" column="moneda" />
+				<result property="tipo" column="tipo" />
+				<result property="total_percepcion" column="total_percepcion" />
+				<result property="neto_percepcion" column="neto_percepcion" />
+				<result property="zona_urbanizacion_cliente" column="zona_urbanizacion_cliente" />
+				<result property="ciudad_cliente" column="ciudad_cliente" />
+				<result property="pais_cliente" column="pais_cliente" />
+				<result property="tipo_percepcion" column="tipo_percepcion" />
+				<result property="porcentaje_percepcion" column="porcentaje_percepcion" />
+		
+		<result property="cod_tipo_documento" column="cod_tipo_documento" />
+		<result property="fecha_documento" column="fecha_documento" />
+		<result property="nro_comprobante" column="nro_comprobante" />
+		<result property="nota" column="nota" />
+		<result property="estado" column="estado" />
+		<association property="clientes" javaType="org.gteperu.erp.everest.domain._Clientes"
+			column="id_cliente" resultMap="rmCliente" />
+		<collection property="ls_RetencionPercepcion" javaType="ArrayList" ofType="org.gteperu.erp.everest.domain._Cpe_RetencionPercepcion_DetalleBean" 
+			column="id_retencion" resultMap="rmDet_RecPer_fac" />
+	</resultMap>
+
+    <resultMap id="rmCliente" type="org.gteperu.erp.everest.domain._Clientes">
+		<result property="id_cliente" column="id_cliente" />
+		<result property="razon_social" column="razon_social" />
+	</resultMap>
+	
+	<resultMap id="rmRetencionExcel" type="org.gteperu.erp.everest.domain._RetencionExcel">
+		<result property="nro_doc" column="nro_doc" />
+		<result property="razon_social" column="razon_social" />
+		<result property="fecha_documento" column="fecha_documento" />
+		<result property="nro_comprobante" column="nro_comprobante" />
+		<result property="descripcion" column="descripcion" />
+		<result property="porcentaje_percepcion" column="porcentaje_percepcion" />
+		<result property="total_percepcion" column="total_percepcion" />
+		<result property="neto_percepcion" column="neto_percepcion" />
+		<result property="nota" column="nota" />
+	</resultMap>
+	
+	<resultMap id="rmDet_RecPer_fac" type="org.gteperu.erp.everest.domain._Cpe_RetencionPercepcion_DetalleBean">
+		<result property="id__retencion_detalle" column="id__detalle_retencion" />
+		<result property="id_retencion" column="id_retencion" />
+		<result property="COD_TIPO_DOCUMENTO" column="cod_tipo_documento" />
+		<result property="NRO_DOCUMENTO" column="nro_documento" />
+		<result property="FECHA_DOCUMENTO" column="fecha_documento" />
+		<result property="MONTO_TOTAL" column="monto_total" />
+		<result property="NRO_DOC_PAGO" column="nro_doc_pago" />
+		<result property="FECHA_PAGO" column="fecha_pago" />
+		<result property="MONTO_RETENIDO" column="monto_retenido" />
+		<result property="FECHA_RETENIDA" column="fecha_retenida" />
+		<result property="MONTO_PAGO_NETO" column="monto_pago_neto" />
+		<result property="COD_MONEDA" column="cod_moneda" />
+		<result property="MONEDA_RETENIDA" column="moneda_retenida" />
+		<result property="MONEDA_PAGO_NETO" column="moneda_pago_neto" />
+		<result property="NRO_DOC_COBRO" column="nro_doc_cobro" />
+		<result property="FECHA_COBRO" column="fecha_cobro" />
+		<result property="MONEDA_PERCIBIDO" column="moneda_percibido" />
+		<result property="MONTO_PERCIBIDO" column="monto_percibido" />
+		<result property="FECHA_PERCEPCION" column="fecha_percepcion" />
+		<result property="MONEDA_COBRO_NETO" column="moneda_cobro_neto" />
+		<result property="MONTO_COBRO_NETO" column="monto_cobro_neto" />
+		
+	</resultMap>
+
+<!--  
+	<select id="lsRetencionOPercepcion" resultMap="rmRetencion">
+			select	r.id_retencion,r.id_empresa,r.total_retencion,r.neto_retencion,r.id_cliente,r.cod_tipo_documento,r.fecha_registro,
+					r.nro_comprobante,r.fecha_documento,r.zona_urbanizacion_empresa,r.cod_pais_empresa,r.zona_urbanizacion_proveedor,r.ciudad_proveedor,
+					r.pais_proveedor,r.tipo_retencion,r.porcentaje_retencion,r.nota,r.moneda,r.tipo,r.estado,
+					r.total_percepcion,r.neto_percepcion,r.zona_urbanizacion_cliente,r.ciudad_cliente,r.pais_cliente,
+					r.tipo_percepcion,r.porcentaje_percepcion,
+	      			c.razon_social,
+					d.id__detalle_retencion,d.cod_tipo_documento,d.id_retencion,d.nro_documento,d.fecha_documento,d.cod_moneda,
+					d.monto_total,d.nro_doc_pago,d.fecha_pago,d.moneda_retenida,d.monto_retenido,d.fecha_retenida,d.moneda_pago_neto,d.monto_pago_neto,
+					d.nro_doc_cobro,d.fecha_cobro,d.moneda_percibido,d.monto_percibido,d.fecha_percepcion,d.moneda_cobro_neto,d.monto_cobro_neto 
+			from retencion r 
+			left join detalle_retencion d 		on r.id_retencion = d.id_retencion
+			left join cliente c 				on r.id_cliente   = c.id_cliente
+			where r.cod_tipo_documento = #{rete.cod_tipo_documento} and r.id_empresa = #{rete.id_empresa}
+			<if test="rete.fechaini_str != null and rete.fechaini_str != null">      
+            and r.fecha_documento between #{rete.fechaini_str} and #{rete.fechafin_str}
+        		<if test="rete.estado != null">           
+            		and r.estado = #{rete.estado}
+        		</if>
+        	</if>
+			<if test="rete.offset != null and rete.limit != null">           
+         	   offset #{rete.offset} limit #{rete.limit}
+       		</if>
+	</select>
+-->
+	
+	<select id="lsRetencionOPercepcion" resultMap="rmRetencion">
+			select	r.*,c.razon_social,
+					d.id__detalle_retencion,d.cod_tipo_documento,d.id_retencion,d.nro_documento,d.fecha_documento,d.cod_moneda,
+					d.monto_total,d.nro_doc_pago,d.fecha_pago,d.moneda_retenida,d.monto_retenido,d.fecha_retenida,d.moneda_pago_neto,d.monto_pago_neto,
+					d.nro_doc_cobro,d.fecha_cobro,d.moneda_percibido,d.monto_percibido,d.fecha_percepcion,d.moneda_cobro_neto,d.monto_cobro_neto
+			from (
+			select r.id_retencion,r.id_empresa,r.total_retencion,r.neto_retencion,r.id_cliente,r.cod_tipo_documento,r.fecha_registro,
+					r.nro_comprobante,r.fecha_documento,r.zona_urbanizacion_empresa,r.cod_pais_empresa,r.zona_urbanizacion_proveedor,r.ciudad_proveedor,
+					r.pais_proveedor,r.tipo_retencion,r.porcentaje_retencion,r.nota,r.moneda,r.tipo,r.estado,
+					r.total_percepcion,r.neto_percepcion,r.zona_urbanizacion_cliente,r.ciudad_cliente,r.pais_cliente,
+					r.tipo_percepcion,r.porcentaje_percepcion
+					from retencion r
+					where r.cod_tipo_documento = #{rete.cod_tipo_documento} and r.id_empresa = #{rete.id_empresa}
+         			<if test="rete.fechaini_str != null and rete.fechaini_str != null">      
+            			and r.fecha_documento between #{rete.fechaini_str} and #{rete.fechafin_str}
+        			<if test="rete.estado != null">           
+            			and r.estado = #{rete.estado}
+        			</if>
+        			</if>
+			<if test="rete.offset != null and rete.limit != null">           
+         	   order by r.id_retencion offset #{rete.offset} limit #{rete.limit}
+       		</if>
+			) as r
+			
+			left join detalle_retencion d 		on r.id_retencion = d.id_retencion
+			left join cliente c 				on r.id_cliente   = c.id_cliente
+	</select>
+	
+	<select id="lsRetencionOPercepcionxEstado" resultMap="rmRetencion">
+		select	r.id_retencion,r.id_empresa,r.total_retencion,r.neto_retencion,r.id_cliente,r.cod_tipo_documento,r.fecha_registro,
+		r.nro_comprobante,r.fecha_documento,r.zona_urbanizacion_empresa,r.cod_pais_empresa,r.zona_urbanizacion_proveedor,r.ciudad_proveedor,
+		r.pais_proveedor,r.tipo_retencion,r.porcentaje_retencion,r.nota,r.moneda,r.tipo,r.estado,
+		r.total_percepcion,r.neto_percepcion,r.zona_urbanizacion_cliente,r.ciudad_cliente,r.pais_cliente,
+		r.tipo_percepcion,r.porcentaje_percepcion,
+		d.id__detalle_retencion,d.cod_tipo_documento,d.id_retencion,d.nro_documento,d.fecha_documento,d.cod_moneda,
+		d.monto_total,d.nro_doc_pago,d.fecha_pago,d.moneda_retenida,d.monto_retenido,d.fecha_retenida,d.moneda_pago_neto,d.monto_pago_neto,
+		d.nro_doc_cobro,d.fecha_cobro,d.moneda_percibido,d.monto_percibido,d.fecha_percepcion,d.moneda_cobro_neto,d.monto_cobro_neto 
+		from retencion r 
+		left join detalle_retencion d 		on r.id_retencion = d.id_retencion
+		where r.estado = #{rete.estado}
+	</select>
+	
+	<select id="cantidadRetePerc" resultType="int">
+		SELECT count(*) FROM retencion 
+		WHERE cod_tipo_documento = #{rete.cod_tipo_documento} and id_empresa = #{rete.id_empresa}
+		<if test="rete.fechaini_str != null and rete.fechaini_str != null">           
+            and fecha_documento between #{rete.fechaini_str} and #{rete.fechafin_str}
+        	<if test="rete.estado != null">           
+            	and estado = #{rete.estado}
+        	</if>
+        </if>
+	</select>
+	
+	<select id="lsRetencionOPercepcionExcel" resultMap="rmRetencionExcel">
+		select  c.nro_doc, c.razon_social , fecha_documento, nro_comprobante,  
+		rs.descripcion,	porcentaje_percepcion,	total_percepcion,	neto_percepcion, nota 
+		from retencion r inner join cliente c  on r.id_cliente   = c.id_cliente
+		inner join regimen_sunat rs on r.tipo_percepcion = rs.codigo
+		where r.cod_tipo_documento = #{rete.cod_tipo_documento} and r.id_empresa = #{rete.id_empresa} and rs.grupo = 'PERC' 
+		<if test="rete.fechaini_str != null and rete.fechaini_str != null">      
+		and r.fecha_documento between #{rete.fechaini_str} and #{rete.fechafin_str}
+		<if test="rete.estado != null">           
+		and r.estado = #{rete.estado}
+		</if>
+		</if>
+		<if test="rete.offset != null and rete.limit != null">           
+		order by r.id_retencion offset #{rete.offset} limit #{rete.limit}
+		</if>
+	</select>
+</mapper>

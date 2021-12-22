@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gteperu.erp.everest.mappers.EmpleadoperfilesMapper">
+    <resultMap id="rmEmpleadoperfiles" type="org.gteperu.erp.everest.domain.Empleadoperfiles">
+        <result property="idempleadoperfiles"   column="idempleadoperfiles" />
+        <result property="idperfiles"   column="idperfiles" />
+        <result property="idempleado"   column="idempleado" />
+        <result property="estado"   column="estado" />
+        <association property="empleado" javaType="org.gteperu.erp.everest.domain.Empleado" column="idempleado" resultMap="rmEmpleado"/>
+        <association property="perfiles" javaType="org.gteperu.erp.everest.domain.Perfiles" column="idperfiles" resultMap="rmPerfiles"/>
+    </resultMap>
+    <resultMap id="rmEmpleado" type="org.gteperu.erp.everest.domain.Empleado">
+        <result property="id"   column="id" />
+        <result property="documentoidentidad"   column="documentoidentidad" />
+        <result property="apellido_paterno"   column="apellido_paterno" />
+        <result property="apellido_materno"   column="apellido_materno" />
+        <result property="nombres"   column="nombres" />
+    </resultMap> 
+    <resultMap id="rmPerfiles" type="org.gteperu.erp.everest.domain.Perfiles">
+        <result property="idperfiles"   column="idperfiles" />
+        <result property="nombres"   column="perfilname" />
+        <result property="estado"   column="estado" />
+        <result property="ambito"   column="ambito" />
+    </resultMap>
+    <select id="retornaEmpleadoperfilesPorEstado"  resultMap="rmEmpleadoperfiles">
+        select idempleadoperfiles,idperfiles,idempleado,estado from empleadoperfiles
+        <if test="empleadoperfiles.estado != null and empleadoperfiles.estado != '' and empleadoperfiles.estado ==1">           
+            where estado =1
+        </if>
+        <if test="empleadoperfiles.estado != null and empleadoperfiles.estado != '' and empleadoperfiles.estado ==2">           
+            where estado =0
+        </if>
+    </select>
+    <select id="retornaEmpleado"  resultMap="rmEmpleado">
+        select id,apellido_paterno,apellido_materno,nombres from empleado where id=#{empleado.idempleado}
+        
+    </select>
+    <select id="retornaEmpleadoperfilesPorEmpleado"  resultMap="rmEmpleadoperfiles">
+        SELECT ep.idempleadoperfiles,e.id, e.apellido_paterno,e.idarea,e.idcargo,e.idsutipodocumentoidentidad,e.idarea,e.idcargo,e.documentoidentidad , e.apellido_materno, e.nombres, e.email,
+        e.estado, e.fechacumpleanios,
+        ep.idperfiles,p.nombres as perfilname
+        FROM empleadoperfiles ep left join  empleado e on e.id=ep.idempleado left join perfiles p on p.idperfiles=ep.idperfiles where ep.estado=1 and e.id=#{empleadoperfiles.idempleado};        
+    
+    </select>       
+    <select id="retornaEmpleadoperfilesLikePorNombre"  resultMap="rmEmpleadoperfiles">
+        
+        select idempleadoperfiles,idperfiles,idempleado,estado from empleadoperfiles where nombre like concat('%',#{empleadoperfiles.nombre},'%')    
+    </select>
+</mapper>

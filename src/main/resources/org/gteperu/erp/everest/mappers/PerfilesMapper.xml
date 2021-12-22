@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gteperu.erp.everest.mappers.PerfilesMapper">
+    <resultMap id="rmPerfiles" type="org.gteperu.erp.everest.domain.Perfiles">
+        <result property="id_perfiles"   column="id_perfiles" />
+        <result property="nombres"   column="nombres" />
+        <result property="estado"   column="estado" />
+        <result property="ambito"   column="ambito" />
+    </resultMap>
+     <resultMap id="rmTotal" type="org.gteperu.erp.everest.domain.Pagination">
+        <result property="cantidad"   column="cantidad" />
+    </resultMap>
+    <select id="retornaPerfilesPorEstado"  resultMap="rmPerfiles">
+        select p.id_perfiles,p.nombres,p.estado,p.ambito 
+		from perfiles p
+		inner join empleadoperfiles ep on p.id_perfiles=ep.idperfiles
+		inner join empleadoempresa ee on ee.idempleado=ep.idempleado
+		 where <!--  ee.idempresa=#{perfiles.idempresa}  -->
+        <if test="perfiles.estado != null and perfiles.estado != '' and perfiles.estado ==1">           
+             p.estado =1
+        </if>
+        <if test="perfiles.estado != null and perfiles.estado != '' and perfiles.estado ==2">           
+             p.estado =0
+        </if>
+        <if test="perfiles.offset != null and perfiles.limit != null">           
+            offset #{perfiles.offset} limit #{perfiles.limit}
+        </if>
+    </select>
+    <select id="retornaPerfilesLikePorNombre"  resultMap="rmPerfiles">
+        select id_perfiles,nombres,estado,ambito 
+        from perfiles 
+        where upper(nombres) like upper(concat('%',#{perfiles.nombres},'%')) and idempresa=#{perfiles.idempresa}
+        <if test="perfiles.offset != null and perfiles.limit != null">           
+            offset #{perfiles.offset} limit #{perfiles.limit}
+        </if>
+    </select>
+    <resultMap id="rmPaginaPerfil" type="org.gteperu.erp.everest.domain.Pagina">
+        <result property="idpagina"   column="idpagina" />
+        <result property="idmodulo"   column="idmodulo" />
+        <result property="descripcion"   column="descripcionp" />
+        <result property="nameModulo"   column="descripcionm" />
+        <result property="url"   column="url" />
+        <result property="parametros"   column="parametros" />
+        <result property="icono"   column="iconop" />
+        <result property="siperfil"   column="estado" />
+        <result property="idperfil"   column="idperfil" />
+        <association property="modulo" javaType="org.gteperu.erp.everest.domain.Modulo" column="idmodulo" resultMap="rmModulo"/>
+    </resultMap>
+     <resultMap id="rmPaginaPerfilAgrupa" type="org.gteperu.erp.everest.domain.Pagina">
+        <result property="idpagina"   column="idpagina" />
+        <result property="idmodulo"   column="idmodulo" />
+        <result property="descripcion"   column="descripcionp" />
+        <result property="nameModulo"   column="descripcionm" />
+        <result property="url"   column="url" />
+        <result property="parametros"   column="parametros" />
+        <result property="icono"   column="iconop" />
+        <result property="siperfil"   column="estadop" />
+        <result property="idperfil"   column="idperfil" />
+       
+    </resultMap>
+    <resultMap id="rmModulo" type="org.gteperu.erp.everest.domain.Modulo">
+        <result property="idmodulo"   column="idmodulom" />
+        <result property="descripcion"   column="descripcionm" />
+        <result property="icono"   column="iconom" />
+        <result property="estado"   column="estadom" />
+    </resultMap>
+    <resultMap id="rmModuloAgrupa" type="org.gteperu.erp.everest.domain.Modulo">
+        <result property="idmodulo"   column="idmodulom" />
+        <result property="descripcion"   column="descripcionm" />
+        <result property="icono"   column="iconom" />
+        <result property="estado"   column="estadom" />
+        <collection property="lsPaginas"
+			ofType="org.gteperu.erp.everest.domain.Pagina" column="idmodulo"
+			resultMap="rmPaginaPerfilAgrupa" />
+    </resultMap>
+    
+    <select id="retornaPaginasMapPorPerfil" parameterType="org.gteperu.erp.everest.domain.Perfiles" resultMap="rmPaginaPerfil">
+        <!--        <![CDATA[
+          select *,0 as estado,#{idperfiles} as idperfil from view_paginasperfiles o where  o.idpagina not in(
+        select uo.idpagina from perfilespaginas uo where uo.idperfil=#{idperfiles}
+        )
+        union
+         select *,1 as estado,#{idperfiles} as idperfil from view_paginasperfiles o where  o.idpagina in(
+        select uo.idpagina from perfilespaginas uo where uo.idperfil=#{idperfiles}
+        )
+        ]]>-->
+
+
+        select *,0 as estado,#{id_perfiles} as idperfil from view_paginasperfiles o left join agrupadormodulospaginas ag on ag.idpagina=o.idpagina where  o.idpagina not in(
+        select uo.idpagina from perfilespaginas uo where uo.idperfil=#{id_perfiles} 
+        )and ag.idagrupadormodulos=#{idagrupadormodulos}	
+        union
+        select *,1 as estado,#{id_perfiles} as idperfil from view_paginasperfiles o left join agrupadormodulospaginas ag on ag.idpagina=o.idpagina where  o.idpagina in(
+        select uo.idpagina from perfilespaginas uo where uo.idperfil=#{id_perfiles}
+        )and ag.idagrupadormodulos=#{idagrupadormodulos}
+
+    </select>
+     <select id="retornaPaginasMapPorPerfilAgrupado" parameterType="org.gteperu.erp.everest.domain.Perfiles" resultMap="rmModuloAgrupa">
+        select *,0 as estadop,#{id_perfiles} as idperfil from view_paginasperfiles o left join agrupadormodulospaginas ag on ag.idpagina=o.idpagina where  o.idpagina not in(
+        select uo.idpagina from perfilespaginas uo where uo.idperfil=#{id_perfiles} and uo.idagrupadormodulos=#{idagrupadormodulos}
+        )and ag.idagrupadormodulos=#{idagrupadormodulos}	
+        union
+        select *,1 as estadop,#{id_perfiles} as idperfil from view_paginasperfiles o left join agrupadormodulospaginas ag on ag.idpagina=o.idpagina where  o.idpagina in(
+        select uo.idpagina from perfilespaginas uo where uo.idperfil=#{id_perfiles} and uo.idagrupadormodulos=#{idagrupadormodulos}
+        )and ag.idagrupadormodulos=#{idagrupadormodulos} order by 1 asc
+
+    </select>
+    <select id="retornaCantidadList"  resultMap="rmTotal">
+        select count(*) as cantidad 
+        from perfiles p
+		inner join empleadoperfiles ep on p.id_perfiles=ep.idperfiles
+		inner join empleadoempresa ee on ee.idempleado=ep.idempleado
+		where ee.idempresa=#{perfiles.idempresa}
+        <if test="perfiles.estado != null and perfiles.estado != '' and perfiles.estado ==1">           
+            and p.estado =1
+        </if>
+        <if test="perfiles.estado != null and perfiles.estado != '' and perfiles.estado ==2">           
+            and p.estado =0
+        </if>       
+    </select>
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gteperu.erp.everest.mappers.UnidadmedidaMapper">
+    <resultMap id="rmUnidadmedida" type="org.gteperu.erp.everest.domain.Unidadmedida">
+        <result property="idunidadmedida"   column="idunidadmedida" />
+        <result property="codigo"   column="codigo" />
+        <result property="descripcion"   column="descripcion" />
+        <result property="cantidad"   column="cantidad" />
+        <result property="estado"   column="estado" />
+        <result property="fecharegistro"   column="fecharegistro" />
+    </resultMap>
+    <resultMap id="rmTotal" type="org.gteperu.erp.everest.domain.Pagination">
+        <result property="cantidad"   column="cantidad" />
+    </resultMap>
+    <select id="retornaUnidadmedidaPorEstado"  resultMap="rmUnidadmedida">
+        select idunidadmedida,codigo,descripcion,cantidad,estado,fecharegistro from unidadmedida
+        <if test="unidadmedida.estado != null and unidadmedida.estado != '' and unidadmedida.estado ==1">           
+            where estado =1
+        </if>
+        <if test="unidadmedida.estado != null and unidadmedida.estado != '' and unidadmedida.estado ==2">           
+            where estado =0
+        </if>
+        <if test="unidadmedida.offset != null and unidadmedida.limit != null">           
+            offset #{unidadmedida.offset} limit #{unidadmedida.limit}
+        </if>
+    </select>
+    <select id="retornaUnidadmedidaLikePorNombre"  resultMap="rmUnidadmedida">
+        select idunidadmedida,codigo,descripcion,cantidad,estado,fecharegistro from unidadmedida where upper(descripcion) like upper(concat('%',#{unidadmedida.descripcion},'%'))    
+        <if test="unidadmedida.offset != null and unidadmedida.limit != null">           
+            offset #{unidadmedida.offset} limit #{unidadmedida.limit}
+        </if>
+    </select>
+
+    <select id="retornaCantidadList"  resultMap="rmTotal">
+        select count(*) as cantidad from unidades_medida 
+        <if test="unidadmedida.estado != null and unidadmedida.estado != '' and unidadmedida.estado ==1">           
+            where estado =1
+        </if>
+        <if test="unidadmedida.estado != null and unidadmedida.estado != '' and unidadmedida.estado ==2">           
+            where estado =0
+        </if>       
+    </select>
+</mapper>

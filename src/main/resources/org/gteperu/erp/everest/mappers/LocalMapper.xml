@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gteperu.erp.everest.mappers.LocalMapper">
+    <resultMap id="rmLocal" type="org.gteperu.erp.everest.domain.Local">
+        <result property="id"   column="id" />
+        <result property="nombre"   column="nombre" />
+        <result property="direccion"   column="direccion" />
+        <result property="idempresa"   column="idempresa" />
+        <result property="estado"   column="estado" />
+    </resultMap>
+    <resultMap id="rmTotal" type="org.gteperu.erp.everest.domain.Pagination">
+        <result property="cantidad"   column="cantidad" />
+    </resultMap>
+    <select id="retornaLocalPorEstado"  resultMap="rmLocal">
+        select *  
+        from local where idempresa=#{local.idempresa}
+        <if test="local.estado != null and local.estado != '' and local.estado ==1">           
+            and estado =1
+        </if>
+        <if test="local.estado != null and local.estado != '' and local.estado ==2">           
+            and estado =0
+        </if>
+        <if test="local.offset != null and local.limit != null">           
+            offset #{local.offset} limit #{local.limit}
+        </if> 
+    </select>
+    
+    <select id="retornaCantidadList"  resultMap="rmTotal">
+        select count(*) as cantidad from local
+         where idempresa=#{local.idempresa}
+        <if test="local.estado != null and local.estado != '' and local.estado ==1">           
+            and estado =1
+        </if>
+        <if test="local.estado != null and local.estado != '' and local.estado ==2">           
+            and estado =0
+        </if>       
+    </select>
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gteperu.erp.everest.mappers.SunatPadronMapper">
+    <resultMap id="rmSunatPadron" type="org.gteperu.erp.everest.domain.Sunat_padron">
+        <result property="id_sunat_padron"   column="id_sunat_padron" />
+        <result property="ruc"   column="ruc" />
+        <result property="contenido"   column="contenido" />
+    </resultMap>
+    
+   <insert id="insertaRucSunatPadronA" >
+        insert into sunat_padron_a(id_sunat_padron,ruc,contenido)values
+        <foreach collection="list" item="param" separator=",">
+            (#{param.id_sunat_padron},#{param.ruc},#{param.contenido})
+        </foreach>
+    </insert>
+     <insert id="insertaRucSunatPadronB" >
+        insert into sunat_padron_b(id_sunat_padron,ruc,contenido)values
+        <foreach collection="list" item="param" separator=",">
+            (#{param.id_sunat_padron},#{param.ruc},#{param.contenido})
+        </foreach>
+    </insert>
+    
+    
+</mapper>

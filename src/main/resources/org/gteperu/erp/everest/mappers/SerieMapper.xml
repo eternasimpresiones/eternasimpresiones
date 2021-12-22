@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="org.gteperu.erp.everest.mappers.SerieMapper">
+
+	<resultMap id="rmSerie"
+		type="org.gteperu.erp.everest.domain.Serie">
+		<result property="iidserie" column="iidserie" />
+		<result property="idsutipodocumento" column="idsutipodocumento" />
+		<result property="sserie" column="sserie" />
+		<result property="idsutipodocumento" column="idsutipodocumento" />
+		<result property="snumero" column="snumero" />
+		<result property="descripcion" column="descripcion" />
+		 <association property="tipodocfacturacion" javaType="org.gteperu.erp.everest.domain.Sutipodocumento" 
+		 column="idsutipodocumento" resultMap="rmTipoDocFac" />
+		
+	</resultMap>
+	
+		<resultMap id="rmTipoDocFac"
+		type="org.gteperu.erp.everest.domain.Sutipodocumento">
+		<result property="idsutipodocumento" column="idsutipodocumento" />
+		<result property="descripcion" column="descripcion" />
+		<result property="codigosunat" column="codigosunat" />
+		<result property="prefijo_sunat" column="prefijo_sunat" />
+		</resultMap>
+	
+
+	<select id="listarSerie" resultMap="rmSerie">
+		SELECT s.*,tpo.idsutipodocumento  ,tpo.codigosunat 
+		, tpo.descripcion ,tpo.prefijo_sunat  
+		FROM serie s 
+		left join sutipodocumento tpo on tpo.idsutipodocumento = s.idsutipodocumento
+		where s.idlocal =#{val.idlocal}  
+		<if test="val.offset != null and val.limit != null">           
+            offset #{val.offset} limit #{val.limit}
+        </if>  
+	</select>
+	
+		<select id="retornaSeriexTipoDocLocal" resultMap="rmSerie">
+		SELECT s.*,tpo.idsutipodocumento  ,tpo.codigosunat 
+		, tpo.descripcion ,tpo.prefijo_sunat  
+		FROM serie s 
+		left join sutipodocumento tpo on tpo.idsutipodocumento = s.idsutipodocumento
+		  where s.idsutipodocumento = #{idsutipodocumento} and s.idlocal = #{idlocal}   
+		 
+	</select>
+	
+ 	
+
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gteperu.erp.everest.mappers.UbigeoMapper">
+    <resultMap id="rmUbigeo" type="org.gteperu.erp.everest.domain.Ubigeo">
+        <result property="idubigeo"   column="idubigeo" />
+        <result property="departamento"   column="departamento" />
+        <result property="provincia"   column="provincia" />
+        <result property="distrito"   column="distrito" />
+        <result property="estado"   column="estado" />
+    </resultMap>
+
+    <select id="retornaUbigeoPorEstado"  resultMap="rmUbigeo">
+        select idubigeo,departamento,provincia,distrito,estado from ubigeo
+        <if test="ubigeo.estado != null and ubigeo.estado != '' and ubigeo.estado ==1">           
+            where estado =1
+        </if>
+        <if test="ubigeo.estado != null and ubigeo.estado != '' and ubigeo.estado ==2">           
+            where estado =0
+        </if>
+    </select>
+    <select id="retornaUbigeoLikePorNombre"  resultMap="rmUbigeo">        
+        select idubigeo,departamento,provincia,distrito,estado from ubigeo where nombre like concat('%',#{ubigeo.nombre},'%')    
+    </select>
+</mapper>

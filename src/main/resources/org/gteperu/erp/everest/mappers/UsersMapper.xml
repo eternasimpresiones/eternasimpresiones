@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gteperu.erp.everest.mappers.UsersMapper">
+
+	<resultMap id="rmUsuarios"
+		type="org.gteperu.erp.everest.domain.Users">
+		<result property="id_usuarios" column="id_usuarios" />
+		<result property="username" column="username" />
+		<result property="email" column="email" />
+		<result property="name" column="name" />
+		<result property="password" column="password" />
+		<result property="movil" column="movil" />
+		<result property="fijo" column="fijo" />
+		<result property="cuenta_detraccion" column="cuenta_detraccion" />
+		<result property="estado" column="estado" />
+		<association property="company"
+			javaType="org.gteperu.erp.everest.domain._Company"
+			column="id_empresa" resultMap="rmCompany" />
+		<association property="userperfiles"
+			javaType="org.gteperu.erp.everest.domain.Userperfiles"
+			column="id_user_perfiles" resultMap="rmUserperfiles" />
+		<association property="perfiles"
+			javaType="org.gteperu.erp.everest.domain.Perfiles"
+			column="id_perfiles" resultMap="rmPerfiles" />
+	</resultMap>
+
+	<resultMap id="rmUserperfiles"
+		type="org.gteperu.erp.everest.domain.Userperfiles">
+		<result property="id_perfiles" column="id_perfiles" />
+		<result property="username" column="username" />
+		<association property="perfiles"
+			javaType="org.gteperu.erp.everest.domain.Perfiles"
+			column="id_perfiles" resultMap="rmPerfiles" />
+	</resultMap>
+
+	<resultMap id="rmPerfiles"
+		type="org.gteperu.erp.everest.domain.Perfiles">
+		<result property="nombres" column="nombre_perfil" />
+		<result property="id_perfiles" column="id_perfiles" />
+	</resultMap>
+
+	<resultMap id="rmCompany"
+		type="org.gteperu.erp.everest.domain._Company">
+		<result property="id_empresa" column="id_empresa" />
+		<result property="razon_social" column="razon_social" />
+		<result property="ruc" column="ruc" />
+		<result property="estado" column="estado" />
+		<result property="idcuenta" column="idcuenta" />
+		<result property="razon_social_empresa"
+			column="razon_social_empresa" />
+		<result property="nombre_comercial_empresa"
+			column="nombre_comercial_empresa" />
+	</resultMap>
+
+	<resultMap id="rmModulo"
+		type="org.gteperu.erp.everest.domain.Modulo">
+		<result property="idmodulo" column="idmodulo" />
+		<result property="descripcion" column="descripcionM" />
+		<result property="icono" column="iconoM" />
+		<result property="estado" column="estadoM" />
+		<result property="raiz" column="raiz" />
+		<collection property="lsPaginas" javaType="ArrayList"
+			ofType="org.gteperu.erp.everest.domain.Pagina" column="idmodulo"
+			resultMap="rmPagina" />
+	</resultMap>
+
+	<resultMap id="rmPagina"
+		type="org.gteperu.erp.everest.domain.Pagina">
+		<result property="idpagina" column="idpagina" />
+		<result property="idmodulo" column="idmodulo" />
+		<result property="descripcion" column="descripcionP" />
+		<result property="url" column="url" />
+		<result property="icono" column="iconoP" />
+		<result property="parametros" column="parametros" />
+		<result property="estado" column="estadoP" />
+	</resultMap>
+
+
+	<select id="retornaUsuarios" resultMap="rmUsuarios">
+		SELECT emp.cod_empresa,uprf.id_perfiles,
+		us.name,us.username,us.email,us.password,uemp.id_empresa,us.id_usuarios,
+		prf.nombres as nombre_perfil, prf.id_perfiles
+		FROM usuarios us
+
+		INNER JOIN userperfiles uprf ON us.id_usuarios=uprf.id_usuarios
+
+		INNER JOIN userempresa uemp ON uemp.id_usuarios=us.id_usuarios
+
+		INNER jOIN company emp ON emp.id_empresa=uemp.id_empresa
+
+		INNER JOIN perfiles prf ON prf.id_perfiles=uprf.id_perfiles
+
+		WHERE emp.id_empresa=#{users.id_empresa};
+	</select>
+
+
+
+
+
+	<select id="retornaUserApiXEmpresa" resultMap="rmUsuarios">
+		SELECT  us.* 
+		FROM usuarios us
+     	INNER JOIN userperfiles uprf ON us.id_usuarios=uprf.id_usuarios and uprf.id_perfiles=#{users.idperfiles}  
+     	WHERE us.id_empresa=#{users.id_empresa}; 
+	</select>
+
+
+
+	<!-- RO 08-11-2019 -->
+	<select id="loginUsers"
+		parameterType="org.gteperu.erp.everest.domain.Users"
+		resultMap="rmUsuarios">
+
+		select e.id_usuarios,e.username,e.email,e.estado,e.name
+		,em.id_empresa,em.razon_social_empresa,em.nombre_comercial_empresa,
+		em.nro_documento_empresa, em.estado,
+		p.nombres as nombre_perfil , p.id_perfiles
+		from usuarios e
+
+		inner join userempresa ee on e.id_usuarios=ee.id_usuarios
+		inner join company em on em.id_empresa=ee.id_empresa
+		inner join userperfiles ep on ep.id_usuarios=e.id_usuarios
+		inner join perfiles p on p.id_perfiles=ep.id_perfiles
+		where upper(e.username)=upper(#{users.username}) and
+		e.password=#{users.password}
+
+	</select>
+
+	<select id="retornaModulosPaginasPorPerfil"
+		parameterType="org.gteperu.erp.everest.domain.Users"
+		resultMap="rmModulo">
+
+		SELECT m.idmodulo, m.descripcion as descripcionM, m.raiz, m.icono as iconoM,
+		m.estado as estadoM,
+		pa.idpagina, pa.descripcion as descripcionP, pa.orden, pa.url, pa.parametros,
+		pa.icono as iconoP, pa.estado as estadoP
+		FROM userperfiles gp
+		left join perfilespaginas p on p.id_perfiles=gp.id_perfiles
+		inner join pagina pa on pa.idpagina=p.idpagina and pa.estado='1'
+		inner join modulo m on m.idmodulo=pa.idmodulo
+		where gp.id_usuarios=#{id_usuarios} and gp.estado=1 group by m.idmodulo
+		,pa.idpagina order by m.orden asc;
+
+	</select>
+
+	<select id="listarUsuariosPaginadosPorEmpresa" resultMap="rmUsuarios">
+		select * from usuarios WHERE id_empresa=#{idempresa} 
+		<if test="pagina.offset != null and pagina.limit != null">
+			offset #{pagina.offset} limit #{pagina.limit}
+		</if>
+	</select>
+
+</mapper>

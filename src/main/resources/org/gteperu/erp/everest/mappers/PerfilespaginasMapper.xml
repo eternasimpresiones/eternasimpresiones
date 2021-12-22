@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gteperu.erp.everest.mappers.PerfilespaginasMapper">
+    <resultMap id="rmPerfilespaginas" type="org.gteperu.erp.everest.domain.Perfilespaginas">
+        <result property="idperfilespaginas"   column="idperfilespaginas" />
+        <result property="id_perfiles"   column="id_perfiles" />
+        <result property="idpagina"   column="idpagina" />
+        <result property="estado"   column="estado" />
+        <association property="pagina" javaType="org.gteperu.erp.everest.domain.Pagina" column="idpagina" resultMap="rmPagina"/>
+        <association property="perfiles" javaType="org.gteperu.erp.everest.domain.Perfiles" column="id_perfiles" resultMap="rmPerfiles"/>
+    </resultMap>
+    <resultMap id="rmPagina" type="org.gteperu.erp.everest.domain.Pagina">
+        <result property="idpagina"   column="idpagina" />
+        <result property="idmodulo"   column="idmodulo" />
+        <result property="descripcion"   column="descripcion" />
+        <result property="url"   column="url" />
+        <result property="parametros"   column="parametros" />
+        <result property="icono"   column="icono" />
+        <result property="estado"   column="estado" />
+        <association property="modulo" javaType="org.gteperu.erp.everest.domain.Modulo" column="idmodulo" resultMap="rmModulo"/>
+    </resultMap> 
+    <resultMap id="rmModulo" type="org.gteperu.erp.everest.domain.Modulo">
+        <result property="idmodulo"   column="idmodulo" />
+        <result property="descripcion"   column="descripcion" />
+        <result property="icono"   column="icono" />
+        <result property="estado"   column="estado" />
+    </resultMap> 
+    <resultMap id="rmPerfiles" type="org.gteperu.erp.everest.domain.Perfiles">
+        <result property="id_perfiles"   column="id_perfiles" />
+        <result property="nombres"   column="nombres" />
+        <result property="estado"   column="estado" />
+        <result property="ambito"   column="ambito" />
+    </resultMap>
+    <select id="retornaPerfilespaginasPorEstado"  resultMap="rmPerfilespaginas">
+        select idperfilespaginas,id_perfiles,idpagina,estado from perfilespaginas
+        <if test="perfilespaginas.estado != null and perfilespaginas.estado != '' and perfilespaginas.estado ==1">           
+            where estado =1
+        </if>
+        <if test="perfilespaginas.estado != null and perfilespaginas.estado != '' and perfilespaginas.estado ==2">           
+            where estado =0
+        </if>
+    </select>
+    <select id="retornaPerfilespaginasLikePorNombre"  resultMap="rmPerfilespaginas">
+        
+        select idperfilespaginas,id_perfiles,idpagina,estado 
+        from perfilespaginas
+         where nombre like concat('%',#{perfilespaginas.nombre},'%')    
+    </select>
+    
+    <insert id="insertaPerfilespaginaslist" useGeneratedKeys="true">
+        insert into perfilespaginas(id_perfiles,idpagina,estado,idagrupadormodulos)values
+        <foreach collection="list" item="param" separator=",">
+            (#{param.id_perfiles},#{param.idpagina},#{param.estado},#{param.idagrupadormodulos})
+        </foreach>
+    </insert>
+    
+</mapper>

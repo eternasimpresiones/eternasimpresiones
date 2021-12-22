@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gteperu.erp.everest.mappers.CompanyMapper">
+	
+	<resultMap id="rmCompany" type="org.gteperu.erp.everest.domain._Company">
+		<result property="id_empresa" column="id_empresa" />
+		<result property="nro_documento_empresa" column="nro_documento_empresa" />
+		<result property="tipo_doc_empresa" column="tipo_doc_empresa" />
+		<result property="ambiente_operacion" column="ambiente_operacion" />
+		<result property="nombre_comercial_empresa" column="nombre_comercial_empresa" />
+		<result property="codigo_ubigeo_empresa" column="codigo_ubigeo_empresa" />
+		<result property="direccion_empresa" column="direccion_empresa" />
+		<result property="razon_social_empresa" column="razon_social_empresa" />
+		<result property="usuario_sol_empresa" column="usuario_sol_empresa" />
+		<result property="pass_sol_empresa" column="pass_sol_empresa" />
+		<result property="pass_firma_empresa" column="pass_firma_empresa" />
+		<result property="idubigeo" column="idubigeo" />
+		<result property="urlimagen" column="urlimagen" />
+		<result property="urlarchivo" column="urlarchivo" />
+		<result property="logo" column="logo" />
+		<result property="archivo" column="archivo" />
+		<result property="estado" column="estado" />
+		<result property="telefono" column="telefono" />
+		<result property="celular" column="celular" />
+		<result property="website" column="website" />
+		<result property="email" column="email" />
+		<result property="fecha_expiracion" column="fecha_expiracion" />
+		<result property="ifacturacionpse" column="ifacturacionpse" />
+		<result property="max_usuarios" column="max_usuarios"/>
+		<result property="iidtiporeporte" column="iidtiporeporte"/>
+		<association property="ubigeo" javaType="org.gteperu.erp.everest.domain.Ubigeo"
+			column="idubigeo" resultMap="rmUbigeo" />
+		<association property="documentoidentidad" javaType="org.gteperu.erp.everest.domain.Sutipodocumento"
+			 resultMap="rmTipoDocIdentidad" />
+	</resultMap>
+	
+	
+	
+	<resultMap id="rmTipoDocIdentidad" type="org.gteperu.erp.everest.domain.Sutipodocumento">
+        <result property="idsutipodocumento"   column="idsutipodocumento" />
+        <result property="codigosunat"   column="codigosunat" />
+        <result property="descripcion"   column="descripcion" />
+        <result property="longmax"   column="longmax" />
+        <result property="abrv"   column="abrv" />
+    </resultMap>
+
+	<resultMap id="rmUbigeo" type="org.gteperu.erp.everest.domain.Ubigeo">
+        <result property="idubigeo"   column="idubigeo" />
+        <result property="departamento"   column="departamento" />
+        <result property="provincia"   column="provincia" />
+        <result property="distrito"   column="distrito" />
+        <result property="codigo"   column="codigo" />
+    </resultMap>
+
+	<select id="retornaEmpresaPorIdempresa" resultMap="rmCompany">
+		SELECT c.*,si.*, u.* FROM company c 
+		LEFT JOIN ubigeo u on c.idubigeo = u.idubigeo
+		INNER JOIN sutipodocumentoidentidad si
+		ON c.tipo_doc_empresa = si.codigosunat
+		WHERE c.id_empresa=#{param.id_empresa}
+	</select>
+	
+	<select id="buscaEmpresaPorIdempresa" resultMap="rmCompany">
+		select * from company where id_empresa=#{cod.id_empresa}
+	</select>
+	
+	<select id="listEmpresa" resultMap="rmCompany">
+		select c.*, u.* from company c
+		LEFT JOIN ubigeo u ON c.idubigeo = u.idubigeo
+	</select>
+	
+	<select id="listEmpresaPagi" resultMap="rmCompany">
+		select * from company c 
+		INNER JOIN sutipodocumentoidentidad si
+		ON c.tipo_doc_empresa = si.codigosunat
+		LEFT JOIN ubigeo u
+		ON c.idubigeo = u.idubigeo
+		<if test="param.offset != null and param.limit != null">
+		offset #{param.offset} limit #{param.limit}
+		</if>
+	</select>
+		
+</mapper>

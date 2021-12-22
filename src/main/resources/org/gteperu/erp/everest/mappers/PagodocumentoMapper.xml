@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="org.gteperu.erp.everest.mappers.PagodocumentoMapper">
+	<resultMap id="rmPagoDoc" type="org.gteperu.erp.everest.domain.Pagodocumento">
+		<result property="idpagodocumento" column="idpagodocumento" />
+		<result property="referencia" column="referencia" />
+		<result property="monto" column="monto" />
+		<result property="fechapago" column="fechapago" />
+		<result property="idmetodopago" column="idmetodopago" />
+		<result property="iddocumento" column="iddocumento" />
+	    <association property="metodopago" javaType="org.gteperu.erp.everest.domain.Metodopago" column="idmetodopago" resultMap="rmMetodopago"/>
+	</resultMap>
+	
+	<resultMap id="rmMetodopago" type="org.gteperu.erp.everest.domain.Metodopago">
+		<result property="idmetodopago" column="idmetodopago" />
+		<result property="descripcion" column="descripcion" />
+	</resultMap>
+
+	<resultMap id="rmTotal"
+		type="org.gteperu.erp.everest.domain.Pagination">
+		<result property="cantidad" column="cantidad" />
+	</resultMap>
+
+	<select id="listarPorDocumento" resultMap="rmPagoDoc">
+		SELECT pd.*, mp.* from pago_documento pd
+		left join metodo_pago mp on mp.idmetodopago = pd.idmetodopago
+		where pd.iddocumento=#{val.iddocumento}
+	</select>
+
+</mapper>

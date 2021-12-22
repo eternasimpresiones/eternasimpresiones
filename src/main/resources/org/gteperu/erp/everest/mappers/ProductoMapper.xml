@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gteperu.erp.everest.mappers.ProductoMapper">
+	
+	<resultMap id="rmProducto" type="org.gteperu.erp.everest.domain._Producto">
+		<result property="id_producto" column="id_producto" />
+		<result property="id_empresa" column="id_empresa" />
+		<result property="codigo_producto_interno" column="codigo_producto_interno" />
+		<result property="nombre_producto" column="nombre_producto" />
+		<result property="codigo_sunat" column="codigo_sunat" />
+		<result property="igv_afecto" column="igv_afecto" />
+		<result property="descripcion" column="descripcion" />
+		<result property="valor_precio_venta" column="valor_precio_venta" />
+		<result property="valor_precio_compra" column="valor_precio_compra" />
+		<result property="estado" column="estado" />
+		<result property="desc_sunat" column="nom_sunat" />
+		<result property="id_unidad_med" column="id_unidad_med" />
+		<result property="id_param_tipomoneda" column="id_param_tipomoneda" />
+	</resultMap>
+
+	<resultMap id="rmProductoCodigoSunat" type="org.gteperu.erp.everest.domain._ProductoCodigoSunat">
+        <result property="id_producto_cod_sunat" column="id_producto_cod_sunat" />
+        <result property="codigo_producto_cod_sunat" column="codigo_producto_cod_sunat" />
+        <result property="descripcion_producto_cod_sunat" column="descripcion_producto_cod_sunat" />
+    </resultMap>
+
+	<select id="retornaProducto" resultMap="rmProducto">
+		select p.id_empresa, p.codigo_producto_interno, p.id_producto,
+				p.nombre_producto, p.codigo_sunat, p.igv_afecto,
+				p.descripcion, p.valor_precio_venta,
+				p.valor_precio_compra, p.estado, p.id_unidad_med, p.id_param_tipomoneda,
+				pcs.descripcion_producto_cod_sunat as nom_sunat
+		from producto p
+			left join producto_cod_sunat pcs on p.codigo_sunat = pcs.codigo_producto_cod_sunat
+		where p.id_empresa = #{codpro.id_empresa}
+		<if test="codpro.filter != null">
+			AND LOWER(p.nombre_producto) LIKE #{codpro.filter}
+		</if>
+		<if test="codpro.offset != null and codpro.limit != null">
+		offset #{codpro.offset} limit #{codpro.limit}
+		</if>
+	</select>
+	
+
+</mapper>

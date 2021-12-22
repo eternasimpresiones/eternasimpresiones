@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Formato5-1-LibroDiario" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d3064f91-4175-4cfa-942e-13a47edd3400">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idperiodo" class="java.lang.Integer"/>
+	<parameter name="idempresa" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT a.correlativoasiento,a.cajabanco,a.idperiodo,a.idempresa,a.fecharegistro,a.cuenta,a.idasientoscontables, a.idsutipooperacion,tt.descripcion as descripciontt ,a.idplancuenta,pc.cuenta as cuentapc,pc.nombre as nombrepc,
+        a.debe, a.haber, a.idtipomoneda,tm.descripcion as descripciontm, a.moneda, a.glosa, a.idclasificadorcostos,cc.nombre as nombrecc,
+        a.iddocumento, a.idsutipocomprovantepagodocumento,tcv.descripcion as descripciontcv,tcv.codigosunat, a.idcliente, a.ruc,e.razonsocial as razonsociale,e.ruc as ruce,p.mes,p.anio,p.nromes,
+        a.razonsocial,  a.codigodocumento, a.flagoperacion,mp.codigosunat as codigosunatmt,tr.numerotransaccion
+        FROM asientoscontables a
+        left join sutipooperacion tt on tt.idsutipooperacion=a.idsutipooperacion
+        inner join plancuenta pc on pc.cuenta=a.cuenta
+        left join tipomoneda tm on tm.idtipomoneda=a.idtipomoneda
+        left join clasificadorcostos cc on cc.idclasificadorcostos=a.idclasificadorcostos
+        left join sutipocomprovantepagodocumento tcv on tcv.idsutipocomprovantepagodocumento=a.idsutipocomprovantepagodocumento
+	left join detalletranspagoscobranza transdet on transdet.iddetalletranspagoscobranza=a.iddocumento
+	left join transpagoscobranza tr on tr.idtranspagoscobranza=transdet.idtranspagoscobranza
+	left join sutipomediopago mp on mp.idsutipomediopago=tr.idsutipomediopago
+left join periodo p on p.idperiodo=a.idperiodo
+	left join empresa e on e.idempresa=a.idempresa
+ where 1=1
+        and   a.cajabanco in(2)  and a.idperiodo=$P{idperiodo} and a.idempresa=$P{idempresa} order by a.correlativoasiento]]>
+	</queryString>
+	<field name="correlativoasiento" class="java.lang.Integer"/>
+	<field name="cajabanco" class="java.lang.Integer"/>
+	<field name="idperiodo" class="java.lang.Integer"/>
+	<field name="idempresa" class="java.lang.Integer"/>
+	<field name="fecharegistro" class="java.sql.Timestamp"/>
+	<field name="cuenta" class="java.lang.String"/>
+	<field name="idasientoscontables" class="java.lang.Integer"/>
+	<field name="idsutipooperacion" class="java.lang.Integer"/>
+	<field name="descripciontt" class="java.lang.String"/>
+	<field name="idplancuenta" class="java.lang.Integer"/>
+	<field name="cuentapc" class="java.lang.String"/>
+	<field name="nombrepc" class="java.lang.String"/>
+	<field name="debe" class="java.lang.Double"/>
+	<field name="haber" class="java.lang.Double"/>
+	<field name="idtipomoneda" class="java.lang.Integer"/>
+	<field name="descripciontm" class="java.lang.String"/>
+	<field name="moneda" class="java.lang.String"/>
+	<field name="glosa" class="java.lang.String"/>
+	<field name="idclasificadorcostos" class="java.lang.Integer"/>
+	<field name="nombrecc" class="java.lang.String"/>
+	<field name="iddocumento" class="java.lang.Integer"/>
+	<field name="idsutipocomprovantepagodocumento" class="java.lang.Integer"/>
+	<field name="descripciontcv" class="java.lang.String"/>
+	<field name="codigosunat" class="java.lang.String"/>
+	<field name="idcliente" class="java.lang.Integer"/>
+	<field name="ruc" class="java.lang.String"/>
+	<field name="razonsociale" class="java.lang.String"/>
+	<field name="ruce" class="java.lang.String"/>
+	<field name="mes" class="java.lang.String"/>
+	<field name="anio" class="java.lang.String"/>
+	<field name="nromes" class="java.lang.String"/>
+	<field name="razonsocial" class="java.lang.String"/>
+	<field name="codigodocumento" class="java.lang.String"/>
+	<field name="flagoperacion" class="java.lang.String"/>
+	<field name="codigosunatmt" class="java.lang.String"/>
+	<field name="numerotransaccion" class="java.lang.String"/>
+	<variable name="debe" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{debe}]]></variableExpression>
+	</variable>
+	<variable name="haber" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{haber}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="86" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="416fcd74-5e0d-4622-964b-8eb2475ef00b" x="0" y="0" width="555" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FORMATO 1.2: "LIBRO CAJA Y BANCOS - DETALLE DE LOS MOVIMIENTOS DE LA CUENTA CORRIENTE"]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1a32841-3875-48f3-a919-c916278e513b" x="0" y="20" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PERÍODO:
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="80418982-b691-435a-9621-735ec38e1747" x="0" y="40" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RUC:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8a14a03f-553d-482f-be98-3ec9c991b2ef" x="0" y="61" width="304" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[APELLIDOS Y NOMBRES, DENOMINACIÓN O RAZÓN SOCIAL:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="74a61a99-aaaf-49a9-9108-9cc6db6aa085" x="307" y="41" width="137" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{ruce}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5cfeb76f-45dd-4a59-bf7e-1243804a3526" x="307" y="61" width="246" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{razonsociale}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="19d1cd4b-b214-4ddf-b98c-94adff62b9f1" x="307" y="20" width="37" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{nromes}+"-"+$F{anio}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="70" splitType="Stretch">
+			<line>
+				<reportElement uuid="e528d5b5-af73-433d-b0ba-d2e4b58ed1ff" x="0" y="69" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="99513754-57cd-4850-badf-b69f17d4c1a2" x="0" y="2" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="e89e6289-934e-4dd3-b383-d12fbb6b40d4" x="0" y="3" width="1" height="66"/>
+			</line>
+			<line>
+				<reportElement uuid="b678bf27-6aae-432a-8adc-b27175b6afec" x="555" y="3" width="1" height="66"/>
+			</line>
+			<line>
+				<reportElement uuid="e89e6289-934e-4dd3-b383-d12fbb6b40d4" x="53" y="3" width="1" height="66"/>
+			</line>
+			<staticText>
+				<reportElement uuid="7df03ed2-7519-40f0-9fca-720b812c3bcb" x="57" y="5" width="52" height="48"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[       FECHA
+        DE LA
+  OPERACIÓN
+]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="0d5795be-6627-4c23-8cd3-701a10e71cee" x="105" y="26" width="450" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="e89e6289-934e-4dd3-b383-d12fbb6b40d4" x="487" y="3" width="1" height="66"/>
+			</line>
+			<staticText>
+				<reportElement uuid="12de4a54-4854-466a-aac7-3aed4bcf2a1a" x="364" y="5" width="124" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[CUENTA CONTABLE ASOCIADA A LA OPERACIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b6f6db6e-44a1-4ab9-8864-8c40284c1dbd" x="490" y="5" width="65" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[ SALDOS Y MOVIMIENTOS]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="e89e6289-934e-4dd3-b383-d12fbb6b40d4" x="406" y="26" width="1" height="43"/>
+			</line>
+			<line>
+				<reportElement uuid="e89e6289-934e-4dd3-b383-d12fbb6b40d4" x="519" y="26" width="1" height="43"/>
+			</line>
+			<staticText>
+				<reportElement uuid="34b8f0f7-faf3-4e5a-9c35-1c3824e543d2" x="364" y="27" width="42" height="42"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[CODIGO
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="34b8f0f7-faf3-4e5a-9c35-1c3824e543d2" x="407" y="27" width="81" height="42"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[ DENOMINACIÓN
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="34b8f0f7-faf3-4e5a-9c35-1c3824e543d2" x="488" y="28" width="32" height="42"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[DEUDOR
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="34b8f0f7-faf3-4e5a-9c35-1c3824e543d2" x="521" y="28" width="35" height="42"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[ACREEDOR
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7df03ed2-7519-40f0-9fca-720b812c3bcb" x="2" y="5" width="52" height="61"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[NÚMERO CORRELATIVO DEL REGISTRO  O CÓDIGO ÚNICO DE LA OPERACIÓN
+]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="e89e6289-934e-4dd3-b383-d12fbb6b40d4" x="105" y="3" width="1" height="66"/>
+			</line>
+			<line>
+				<reportElement uuid="e89e6289-934e-4dd3-b383-d12fbb6b40d4" x="363" y="3" width="1" height="66"/>
+			</line>
+			<staticText>
+				<reportElement uuid="7df03ed2-7519-40f0-9fca-720b812c3bcb" x="109" y="5" width="254" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[                                     OPERACIONES BANCARIAS
+]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="e89e6289-934e-4dd3-b383-d12fbb6b40d4" x="150" y="26" width="1" height="43"/>
+			</line>
+			<line>
+				<reportElement uuid="e89e6289-934e-4dd3-b383-d12fbb6b40d4" x="209" y="27" width="1" height="43"/>
+			</line>
+			<staticText>
+				<reportElement uuid="34b8f0f7-faf3-4e5a-9c35-1c3824e543d2" x="107" y="28" width="43" height="37"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[ MEDIO DE PAGO
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="34b8f0f7-faf3-4e5a-9c35-1c3824e543d2" x="151" y="29" width="58" height="40"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[ DESCRIPCIÓN DE
+  LA OPERACIÓN
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="34b8f0f7-faf3-4e5a-9c35-1c3824e543d2" x="210" y="29" width="94" height="37"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[         APELLIDOS Y NOMBRES,
+  DENOMINACIÓN O RAZÓN SOCIAL
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="34b8f0f7-faf3-4e5a-9c35-1c3824e543d2" x="305" y="29" width="58" height="40"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[NÚMERO DE TRANSACCIÓN BANCARIA]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="e89e6289-934e-4dd3-b383-d12fbb6b40d4" x="304" y="27" width="1" height="43"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement uuid="2a031886-6390-4fef-953d-104b439b4be8" x="151" y="0" width="59" height="20"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{glosa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="51d53fd0-7780-4b0b-b4eb-0cd9f396acc5" x="406" y="1" width="86" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombrepc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7334192a-ac5d-4803-a1d9-5c2e9d5f34f3" x="493" y="1" width="30" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{debe}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="da72e02e-c28d-43af-b83c-9d17e13639b7" x="526" y="1" width="30" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{haber}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="bfeb6e10-9417-4902-8233-d034912f06e0" x="0" y="0" width="555" height="1" forecolor="#CCCCCC"/>
+			</line>
+			<textField>
+				<reportElement uuid="b89510b1-6791-4f8f-9f2e-59c10e063b9f" x="364" y="1" width="43" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cuenta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d189f5b1-9f72-455f-a421-375fccd4665d" x="209" y="1" width="95" height="20"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{razonsocial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ed03bd8c-1b5a-4ae5-b98d-f6432eabfcea" x="307" y="0" width="56" height="20"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numerotransaccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4699bb52-0f39-4dee-98d7-224b12ac11db" x="109" y="1" width="41" height="20"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codigosunatmt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="fc87aae3-1855-4881-a3cf-8cd960177305" x="0" y="1" width="53" height="20"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{idasientoscontables}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a3cc929d-5429-407d-9805-bad61b97b291" x="53" y="1" width="52" height="20"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($F{fecharegistro})]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="29" splitType="Stretch"/>
+	</columnFooter>
+	<lastPageFooter>
+		<band height="50">
+			<line>
+				<reportElement uuid="815eb2e4-26b1-45f9-a7ce-2287db921e10" x="1" y="0" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="552745b0-c60b-4e4c-9ea8-c5906c9b2e3f" x="392" y="1" width="100" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Totales:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="55075700-5ab9-46db-bb66-3cd054bf7418" x="526" y="1" width="27" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{haber}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="84595866-716b-4a79-8cb3-414ff39a532d" x="492" y="1" width="30" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{debe}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+</jasperReport>

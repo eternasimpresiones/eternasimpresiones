@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gteperu.erp.everest.mappers.PlantillaDocumentoMapper">
+
+	<resultMap id="rmPlantillaDocumento" type="org.gteperu.erp.everest.domain.Plantilla_documento">
+		<result property="iid_plantilla_documento" column="iid_plantilla_documento" />
+		<result property="iid_empresa" column="iid_empresa" />
+		<result property="iid_cliente" column="iid_cliente" />
+		<result property="scod_moneda" column="scod_moneda" />
+		<result property="sobservacion" column="sobservacion" />
+		<result property="scod_tipo_documento" column="scod_tipo_documento" />
+		<result property="stipo_operacion" column="stipo_operacion" />
+		<result property="snonmbre" column="snonmbre" />
+	    <result property="des" column="desc_unidad_med" />
+		
+		
+		<association property="Cliente" javaType="org.gteperu.erp.everest.domain._Clientes"
+			column="iid_cliente" resultMap="rmCliente" />
+			
+		<collection property="lsDetallePlantillaDocumento" javaType="ArrayList" ofType="org.gteperu.erp.everest.domain.Detalle_plantilla_documento" 
+                    column="iid_plantilla_documento" resultMap="rmDetalle"/>  
+                    
+			<!--<association property="sutipodoc" javaType="org.gteperu.erp.everest.domain.Sutipodocumento"
+			column="idsutipodocumento" resultMap="rmTipoDoc" />      -->
+			
+	</resultMap>
+	
+	<resultMap id="rmDetalle" type="org.gteperu.erp.everest.domain.Detalle_plantilla_documento">
+		<result property="iid_detalle_plantilla_documento"   column="iid_detalle_plantilla_documento" />
+        <result property="iid_plantilla_documento"   column="iid_plantilla_documento" />
+        <result property="iitem"   column="iitem" />
+        <result property="dcantidad"   column="dcantidad" />
+        <result property="dprecio"   column="dprecio" />
+        <result property="dimporte"   column="dimporte" />
+        <result property="scodigo"   column="scodigo" />
+        <result property="sdescripcion"   column="sdescripcion" />
+        <result property="scod_tipo_operacion"   column="scod_tipo_operacion" />
+        <result property="sunidad_medida"   column="sunidad_medida" />
+        <result property="iigv"   column="iigv" />
+        <result property="itotal"   column="itotal" />
+        <result property="snombreproducto"   column="prosnombreproducto" />
+        <result property="id_producto"   column="id_producto" />
+        <result property="desc_unidad_med"   column="des" />
+        
+    </resultMap>
+	
+	<resultMap id="rmCliente" type="org.gteperu.erp.everest.domain._Clientes">
+		<result property="id_cliente"   column="id_cliente" />
+        <result property="razon_social"   column="razon_social" />
+        <result property="nro_doc"   column="nro_doc" />
+        <result property="tipo_doc"   column="tipo_doc" />
+        <result property="direccion_fiscal"   column="direccion_fiscal" />
+        <result property="movil"   column="movil" />
+        <result property="fijo"   column="fijo" />
+        <result property="cuenta_detraccion"   column="cuenta_detraccion" />
+        
+        <association property="Sutipodocumento" javaType="org.gteperu.erp.everest.domain.Sutipodocumento"
+			column="tipo_doc" resultMap="rmTipoDoc" /> 
+    </resultMap>
+	    
+    <resultMap id="rmTipoDoc" type="org.gteperu.erp.everest.domain.Sutipodocumento">
+		<result property="idsutipodocumento"   column="idsutipodocumento" />
+        <result property="codigosunat"   column="codigosunat" />
+        <result property="descripcion"   column="descripcion" />
+         <result property="longmax"   column="longmax" />
+          <result property="abrv"   column="abrv" />
+           <result property="estado"   column="estado" />
+            <result property="prefijo_sunat"   column="prefijo_sunat" />
+    </resultMap>
+    
+     <resultMap id="rmTotal" type="org.gteperu.erp.everest.domain.Pagination">
+        <result property="cantidad"   column="cantidad" />
+    </resultMap>
+    
+    <select id="listarPlantillaTodas"  resultMap="rmPlantillaDocumento">
+	select pd.*,dpd.*,c.*,sd.*, pro.nombre_producto as prosnombreproducto
+	from plantilla_documento pd 
+	inner join detalle_plantilla_documento dpd on dpd.iid_plantilla_documento=pd.iid_plantilla_documento
+	left join producto pro on dpd.id_producto = pro.id_producto
+	inner join cliente c on c.id_cliente=pd.iid_cliente 
+	inner join sutipodocumento sd on sd.codigosunat=pd.scod_tipo_documento 
+	where pd.iid_empresa=#{param.iid_empresa} 
+	<if test="param.iid_cliente != null and param.iid_cliente != '' ">           
+            and pd.iid_cliente=#{param.iid_cliente}
+     		</if>
+     		
+     		<if test="param.scod_tipo_documento != null and param.scod_tipo_documento != '' ">           
+            and pd.scod_tipo_documento=#{param.scod_tipo_documento}
+    		 </if> 
+    </select>
+    
+    
+    <select id="retornaPlantilla" resultMap="rmPlantillaDocumento">
+<!-- <<<<<<< HEAD -->
+<!--   		select pd.*,dpd.*,c.*,sd.*,um.desc_unidad_med as des -->
+<!--   		select pd.*,dpd.*,c.*,sd.*, pro.nombre_producto as prosnombreproducto -->
+  		select pd.*,dpd.*,c.*,sd.*, pro.nombre_producto as prosnombreproducto,um.desc_unidad_med as des 
+<!-- >>>>>>> 1cd0c9e3d1fbe614602dc7710caed7978345b68a -->
+        from	(select  pd.*
+        from plantilla_documento pd
+        	where  pd.iid_empresa=#{param.iid_empresa} 
+        	
+        	<if test="param.iid_cliente != null and param.iid_cliente != '' ">           
+            and pd.iid_cliente=#{param.iid_cliente}
+     		</if>
+     		
+     		<if test="param.scod_tipo_documento != null and param.scod_tipo_documento != '' ">           
+            and pd.scod_tipo_documento=#{param.scod_tipo_documento}
+    		 </if> 
+   
+        	<if test="param.offset != null and param.limit != null">       
+            offset #{param.offset} limit #{param.limit}
+        	</if>) as pd
+<!-- <<<<<<< HEAD -->
+        	
+<!--       inner join detalle_plantilla_documento dpd -->
+<!-- 	  on dpd.iid_plantilla_documento=pd.iid_plantilla_documento inner join cliente c  -->
+<!-- 	  on c.id_cliente=pd.iid_cliente inner join sutipodocumento sd  -->
+<!-- 	  on sd.codigosunat=pd.scod_tipo_documento left join unidades_medida um -->
+<!-- 	  on dpd.sunidad_medida=um.abrv_unidad_med -->
+	  
+<!--       inner join detalle_plantilla_documento dpd on dpd.iid_plantilla_documento=pd.iid_plantilla_documento -->
+<!--       left join producto pro on dpd.id_producto = pro.id_producto -->
+<!--       inner join cliente c on c.id_cliente=pd.iid_cliente  -->
+<!--       inner join sutipodocumento sd  on sd.codigosunat=pd.scod_tipo_documento -->
+<!-- ======= -->
+
+      inner join detalle_plantilla_documento dpd on dpd.iid_plantilla_documento=pd.iid_plantilla_documento
+      left join producto pro on dpd.id_producto = pro.id_producto
+      inner join cliente c on c.id_cliente=pd.iid_cliente 
+      inner join sutipodocumento sd  on sd.codigosunat=pd.scod_tipo_documento 
+      left join unidades_medida um on dpd.sunidad_medida=um.abrv_unidad_med
+<!-- >>>>>>> 1cd0c9e3d1fbe614602dc7710caed7978345b68a -->
+        
+    </select>
+    
+    <select id="retornaCantidadList"  resultMap="rmTotal">
+       select count (*) as cantidad from plantilla_documento pd  where pd.iid_empresa=#{plantilla.iid_empresa}
+       <if test="plantilla.iid_cliente != null and plantilla.iid_cliente != '' ">           
+            and pd.iid_cliente=#{plantilla.iid_cliente}
+     		</if>
+     		
+     		<if test="plantilla.scod_tipo_documento != null and plantilla.scod_tipo_documento != '' ">           
+            and pd.scod_tipo_documento=#{plantilla.scod_tipo_documento}
+    		 </if> 
+    </select>
+    
+    
+</mapper>

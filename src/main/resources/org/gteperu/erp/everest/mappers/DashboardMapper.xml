@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gteperu.erp.everest.mappers.DashboardMapper">
+    <resultMap id="rmDash" type="org.gteperu.erp.everest.domain.Dashboard">
+        <result property="id_empresa"   column="id_empresa" />
+        <result property="idlocal"   column="idlocal" />
+        <result property="total"   column="total" />
+       <result property="idcliente"   column="idcliente" />
+       <result property="fecha_inicio"   column="fecha_inicio" />
+        <result property="fecha_fin"   column="fecha_fin" />
+        
+         <result property="fecha_inicio_tmp"   column="fecha_inicio_tmp" />
+        <result property="fecha_fin_tmp"   column="fecha_fin_tmp" />
+        
+         <result property="ano"   column="ano" />
+        <result property="mes"   column="mes" />
+          <result property="direccionFiscalCliente"   column="direccionFiscalCliente" />
+        <result property="nroDocCliente"   column="nroDocCliente" />
+        <result property="razonSocialCliente"   column="razonSocialCliente" />
+        				
+        
+    </resultMap>
+    
+   
+  
+  
+    <select id="totalFacturadoMes"  resultMap="rmDash">
+       select sum(total) as total    
+        from documento   
+        where id_empresa=#{dash.id_empresa}  
+        <if test="dash.idlocal != null and dash.idlocal != ''">           
+           and idlocal =#{dash.idlocal} 
+        </if> 
+        and fecha_documento between cast(#{dash.fecha_inicio} as timestamp) 
+      						   and  cast(#{dash.fecha_fin} as timestamp)  
+        
+    </select>
+    
+   
+  <select id="facturacionClientesMensual"  resultMap="rmDash">
+       select doc.total ,doc.id_cliente as idcliente,doc.direccion_fiscal_cliente as direccionFiscalCliente 
+       , c.razon_social as razonSocialCliente ,c.nro_doc as nroDocCliente   
+        from documento doc 
+		LEFT JOIN cliente c on doc.id_cliente = c.id_cliente				 
+        where doc.id_empresa=#{dash.id_empresa}  
+        <if test="dash.idlocal != null and dash.idlocal != ''">           
+           and idlocal =#{dash.idlocal} 
+        </if> 
+        and fecha_documento between cast(#{dash.fecha_inicio_tmp} as timestamp) 
+      						   and  cast(#{dash.fecha_fin_tmp} as timestamp)  
+        
+    </select>
+    
+</mapper>

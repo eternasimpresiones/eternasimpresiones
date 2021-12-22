@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gteperu.erp.everest.mappers.BancoEmpresaMapper">
+	
+	<resultMap id="rmBancoEmpresa" type="org.gteperu.erp.everest.domain.Bancoempresa">
+		<result property="idbancoempresa" column="idbancoempresa" />
+		<result property="idempresa" column="idempresa" />
+		<result property="idbanco" column="idbanco" />
+		<result property="numerocuenta" column="numerocuenta" />
+		<result property="numerocuentainterbancaria" column="numerocuentainterbancaria" />
+		<result property="idtipocuentabancaria" column="idtipocuentabancaria" />
+		<result property="idtipomoneda" column="idtipomoneda" />
+		 <result property="breporte" column="breporte" />
+		  <association property="banco" javaType="org.gteperu.erp.everest.domain.Banco"
+			column="idbanco" resultMap="rmBanco" />
+		<association property="tipomoneda" javaType="org.gteperu.erp.everest.domain.Tipomoneda"
+			column="idtipomoneda" resultMap="rmTipoMoneda" />
+		<association property="tipocuentabancaria" javaType="org.gteperu.erp.everest.domain.Tipocuentabancaria"
+			column="idtipocuentabancaria" resultMap="rmTipoCuentaBancaria" />
+	</resultMap>
+
+<resultMap id="rmBanco" type="org.gteperu.erp.everest.domain.Banco">
+		<result property="nombre" column="nombre" />
+		<result property="codigosunat" column="codigosunat" />
+		<result property="idbanco" column="idbanco" />
+		<result property="abreviatura" column="abreviatura" />
+ </resultMap>
+ 
+<resultMap id="rmTipoMoneda" type="org.gteperu.erp.everest.domain.Tipomoneda">
+		<result property="descripcion" column="descripcion" />
+		<result property="codigoalfabetico" column="codigoalfabetico" />
+		<result property="simbolo" column="simbolo" />
+  </resultMap>
+  
+ <resultMap id="rmTipoCuentaBancaria" type="org.gteperu.erp.everest.domain.Tipocuentabancaria">
+		<result property="nombre" column="nombretipo" />
+</resultMap>
+		
+	<select id="retornaBancoEmpresaxEmpresaxEstado" resultMap="rmBancoEmpresa">
+		select be.*, b.*,tcb.nombre as nombretipo,tm.*  
+		from bancoempresa be 
+	 	left join banco b on be.idbanco = b.idbanco 
+	 	left join tipocuentabancaria tcb on be.idtipocuentabancaria = tcb.idtipocuentabancaria 
+	 	left join tipomoneda tm on be.idtipomoneda = tm.idtipomoneda 
+	  	where be.idempresa = #{bancoempresa.idempresa}   order by b.abreviatura asc 
+	  	<if test="bancoempresa.offset != null and bancoempresa.limit != null">           
+            offset #{bancoempresa.offset} limit #{bancoempresa.limit}
+        </if>  
+       
+	</select>
+	
+
+</mapper>

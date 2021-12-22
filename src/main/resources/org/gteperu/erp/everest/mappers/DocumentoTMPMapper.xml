@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gteperu.erp.everest.mappers.DocumentoTMPMapper">
+	
+	<resultMap id="rmDocumentoTMP" type="org.gteperu.erp.everest.domain._Documento_TMP">
+		<result property="iid_documento_tmp" column="iid_documento_tmp" />
+		<result property="iid_empresa" column="iid_empresa" />
+		<result property="sserie_comprobante" column="sserie_comprobante" />
+		<result property="snro_comprobante" column="snro_comprobante" />
+		<result property="stipo_documento" column="stipo_documento" />
+		<result property="stipo_documento_cliente" column="stipo_documento_cliente" />
+		<result property="snumero_documento_cliente" column="snumero_documento_cliente" />
+		<result property="srazon_social_cliente" column="srazon_social_cliente" />
+		<result property="sdireccion_cliente" column="sdireccion_cliente" />
+		<result property="scod_moneda" column="scod_moneda" />
+        <result property="dsub_total"   column="dsub_total" />
+		<result property="dtotal_inafecta" column="dtotal_inafecta" />
+        <result property="dtotal_exoneradas"   column="dtotal_exoneradas" />
+        <result property="dtotal_gratuitas"   column="dtotal_gratuitas" />
+        <result property="dtotal_igv"   column="dtotal_igv" />
+        <result property="dtotal_percepciones"   column="dtotal_percepciones" />
+        <result property="dtotal"   column="dtotal" />
+        <result property="tfecha_documento"   column="tfecha_documento" />
+        <result property="semail_cliente"   column="semail_cliente" />
+        <result property="stipo_operacion"   column="stipo_operacion" />
+        <result property="stipo_nota_debito"   column="stipo_nota_debito" />
+        <result property="stipo_nota_credito"   column="stipo_nota_credito" />
+        <result property="sdescripcion_motivo"   column="sdescripcion_motivo" />
+        <result property="stipo_comprobante_modifica"   column="stipo_comprobante_modifica" />
+        <result property="snro_documento_modifica"   column="snro_documento_modifica" />
+        <result property="tfecha_documento_referencia"   column="tfecha_documento_referencia" />
+        <result property="splaca_vehiculo"   column="splaca_vehiculo" />
+        <result property="dtotal_detracciones"   column="dtotal_detracciones" />
+        <result property="dporcentaje_detraccion"   column="dporcentaje_detraccion" />
+		<collection property="lsdetalle" javaType="ArrayList"
+			ofType="org.gteperu.erp.everest.domain._Detalle_Documento_TMP" column="iid_documento_tmp"
+			resultMap="rmDetalle" />
+	</resultMap>
+
+	<resultMap id="rmDetalle" type="org.gteperu.erp.everest.domain._Detalle_Documento_TMP">
+        <result property="iid_detalle_documento_tmp"   column="iid_detalle_documento_tmp" />
+        <result property="iid_documento_tmp"   column="iid_documento_tmp" />
+        <result property="iitem"   column="iitem" />
+        <result property="dcantidad"   column="dcantidad" />
+        <result property="sunidad_medida"   column="sunidad_medida" />
+        <result property="scodigo"   column="scodigo" />
+        <result property="sdescripcion"   column="sdescripcion" />
+        <result property="dprecio"   column="dprecio" />
+        <result property="scod_tipo_operacion"   column="scod_tipo_operacion" />
+        <result property="digv"   column="digv" />
+        <result property="scod_sunat"   column="scod_sunat" />
+        <result property="dimporte"   column="dimporte" />
+
+    </resultMap>
+
+	<select id="retornaLsDocumentoTMP" resultMap="rmDocumentoTMP">
+		select doc.*,det.* from documento_tmp as doc
+		inner join detalle_documento_tmp det on doc.iid_documento_tmp = det.iid_documento_tmp
+	</select>
+	
+	
+	
+		
+</mapper>

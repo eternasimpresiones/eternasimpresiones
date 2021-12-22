@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gteperu.erp.everest.mappers.DetalleDocumentoMapper">
+	
+	<resultMap id="rmDetalleDocumento" type="org.gteperu.erp.everest.domain._DocumentoCpe_DetalleBean">
+		<result property="id_detalle_documento" column="id_detalle_documento" />
+		<result property="id_documento" column="id_documento" />
+		<result property="id_empresa" column="id_empresa" />
+		<result property="item" column="item" />
+		<result property="total_inafecta" column="total_inafecta" />
+		<result property="unidad_medida" column="unidad_medida" />
+		<result property="cantidad" column="cantidad" />
+		<result property="precio" column="precio" />
+		<result property="importe" column="importe" />
+		<result property="precio_tipo_codigo" column="precio_tipo_codigo" />
+		<result property="igv" column="igv" />
+		<result property="isc" column="isc" />
+		<result property="codigo" column="codigo" />
+		<result property="descripcion" column="descripcion" />
+		<result property="precio_sin_impuesto" column="precio_sin_impuesto" />
+		<result property="cod_sunat" column="cod_sunat" />
+		<result property="cod_tipo_operacion" column="cod_tipo_operacion" />
+		
+	</resultMap>
+
+	<insert id="insertaDetalleDocumentoPorLista" useGeneratedKeys="true">
+		insert into detalle_documento(id_documento,id_empresa,item,unidad_medida,cantidad,precio,importe,precio_tipo_codigo,igv,isc,codigo,descripcion,cod_sunat,total_inafecta,cod_tipo_operacion)
+		values
+		<foreach collection="list" item="param" separator=",">
+            (#{param.id_documento},#{param.id_empresa},#{param.item},#{param.unidad_medida},#{param.cantidad},#{param.precio},#{param.importe}, #{param.precio_tipo_codigo}, #{param.igv}, #{param.isc}, #{param.codigo}, #{param.descripcion},#{param.cod_sunat},#{param.precio_sin_impuesto},#{param.cod_tipo_operacion})
+        </foreach>
+	</insert>
+	<insert id="insertaDetalleDocumentoGuiaPorLista" useGeneratedKeys="true">
+		insert into detalle_documento(id_documento,id_empresa,item,unidad_medida,cantidad,codigo,descripcion)
+		values
+		<foreach collection="list" item="param" separator=",">
+            (#{param.id_documento},#{param.id_empresa},#{param.ITEM},#{param.UNIDAD_MEDIDA},#{param.CANTIDAD}, #{param.CODIGO}, #{param.DESCRIPCION})
+        </foreach>
+	</insert>
+</mapper>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gteperu.erp.everest.mappers.PagoEmpresaMapper">
+
+	<resultMap id="rmPagoEmpresa" type="org.gteperu.erp.everest.domain.PagoEmpresa">
+		<result property="id_pagoempresa" column="id_pagoempresa" />
+		<result property="id_empresa" column="id_empresa" />
+		<result property="meses" column="meses" />
+		<result property="fechainicio" column="fechainicio" />
+		<result property="fechafin" column="fechafin" />
+		<result property="total" column="total" />
+		<result property="cancelado" column="cancelado" />
+		<result property="fecharegistro" column="fecharegistro" />
+	</resultMap>
+	
+	<select id="listarPagoEmpresa" resultMap="rmPagoEmpresa">
+	
+		select * from pagoempresa where id_empresa=#{empresa}
+	</select>
+	
+	<select id="buscarPagoEmpresa" resultMap="rmPagoEmpresa">
+		select * from pagoempresa where id_pagoempresa=#{id_pagoempresa}
+	</select>
+
+</mapper>
